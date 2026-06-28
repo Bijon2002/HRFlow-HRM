@@ -1,0 +1,257 @@
+Issue ID,Parent ID,Issue Type,Summary,Description,Sprint,Assignee,Priority,Start Date,Due Date,Story Points,Labels
+1,,Epic,Project Setup & Authentication,Setup project infrastructure and authentication system,Sprint 1,,,13/Jun/26,26/Jun/26,,
+2,,Epic,AI Recruitment Management,AI-powered CV filtering and recruitment workflow,Sprint 2,,,27/Jun/26,10/Jul/26,,
+3,,Epic,Employee Management,Employee profiles and skill management,Sprint 3,,,11/Jul/26,31/Jul/26,,
+4,,Epic,Project & Task Management,Project CRUD and task tracking system,Sprint 3,,,11/Jul/26,31/Jul/26,,
+5,,Epic,AI Resource Allocation,AI-powered team recommendation and workload analysis,Sprint 3,,,20/Jul/26,31/Jul/26,,
+6,,Epic,Attendance & Leave Management,Clock in/out and leave request system,Sprint 4,,,01/Aug/26,14/Aug/26,,
+7,,Epic,Reporting & Analytics,Dashboards and downloadable reports,Sprint 4,,,05/Aug/26,14/Aug/26,,
+8,,Epic,Notifications & Activity Logs,Alert system and activity tracking,Sprint 3-4,,,20/Jul/26,14/Aug/26,,
+9,,Epic,System Integration & Testing,Module integration and QA testing,Sprint 4,,,08/Aug/26,14/Aug/26,,
+10,,Epic,Documentation & Final Presentation,Project documentation and final demo,Week 10,,,15/Aug/26,21/Aug/26,,
+11,1,Story,Setup Development Environment,Create repositories and configure all project services,Sprint 1,divagar,Highest,13/Jun/26,15/Jun/26,8,backend
+12,11,Task,Create Git Repository,Initialize Git repository with README and .gitignore,Sprint 1,divagar,Highest,13/Jun/26,13/Jun/26,,backend
+13,11,Task,Configure Branch Strategy,Create main dev feature/* release/* branches,Sprint 1,divagar,Highest,13/Jun/26,13/Jun/26,,backend
+14,11,Task,Setup React Frontend (Vite + TypeScript),Install React Router Redux Toolkit Axios,Sprint 1,divagar,Highest,13/Jun/26,14/Jun/26,,frontend
+15,11,Task,Setup Node.js Backend (Express),Install cors dotenv mongoose bcrypt jsonwebtoken,Sprint 1,thuva,Highest,13/Jun/26,14/Jun/26,,backend
+16,11,Task,Setup Python AI Service,Install Flask/FastAPI create project structure requirements.txt,Sprint 1,bijon,Highest,14/Jun/26,15/Jun/26,,ai-service
+17,11,Task,Configure MongoDB,Create database configure connection string create .env,Sprint 1,thuva,Highest,14/Jun/26,14/Jun/26,,database
+18,11,Task,Configure Environment Variables,Create .env for client server AI service,Sprint 1,divagar,High,14/Jun/26,14/Jun/26,,backend
+19,11,Task,Setup ESLint & Prettier,Configure linting for frontend and backend,Sprint 1,divagar,Medium,15/Jun/26,15/Jun/26,,backend
+20,1,Story,Requirement Analysis & Documentation,Analyze requirements and create product backlog,Sprint 1,bijon,Highest,13/Jun/26,20/Jun/26,5,documentation
+21,20,Task,Finalize Functional Requirements,Document all features from client meeting,Sprint 1,bijon,Highest,13/Jun/26,15/Jun/26,,documentation
+22,20,Task,Write User Stories,Create user stories for all epics,Sprint 1,bijon,Highest,15/Jun/26,17/Jun/26,,documentation
+23,20,Task,Define Acceptance Criteria,Write acceptance criteria for each story,Sprint 1,bijon,High,17/Jun/26,18/Jun/26,,documentation
+24,20,Task,Prepare Product Backlog,Prioritize all stories in Jira,Sprint 1,bijon,High,18/Jun/26,19/Jun/26,,documentation
+25,20,Task,Create Initial Test Plan,Outline test strategy for all sprints,Sprint 1,bijon,Medium,19/Jun/26,20/Jun/26,,testing
+26,1,Story,Database Design,Design all MongoDB collections and relationships,Sprint 1,thuva,Highest,15/Jun/26,21/Jun/26,8,database
+27,26,Task,Design ER Diagram,Identify all entities and relationships,Sprint 1,thuva,Highest,15/Jun/26,17/Jun/26,,database
+28,26,Task,Create User Collection,Fields: name email password role department skills status,Sprint 1,thuva,Highest,17/Jun/26,18/Jun/26,,database
+29,26,Task,Create Job Collection,Fields: title description requirements department status postedBy deadline,Sprint 1,thuva,High,18/Jun/26,18/Jun/26,,database
+30,26,Task,Create Candidate Collection,Fields: name email phone resumeUrl skills education experience score status,Sprint 1,thuva,High,18/Jun/26,19/Jun/26,,database
+31,26,Task,Create Project Collection,Fields: name description manager team tasks deadline status progress,Sprint 1,thuva,High,19/Jun/26,19/Jun/26,,database
+32,26,Task,Create Task Collection,Fields: title project assignee status deadline priority documents comments,Sprint 1,thuva,High,19/Jun/26,20/Jun/26,,database
+33,26,Task,Create Attendance Collection,Fields: employee date clockIn clockOut totalHours overtime status,Sprint 1,thuva,High,20/Jun/26,20/Jun/26,,database
+34,26,Task,Create Leave Collection,Fields: employee type startDate endDate reason status approvedBy,Sprint 1,thuva,High,20/Jun/26,20/Jun/26,,database
+35,26,Task,Create ActivityLog Collection,Fields: user action module details timestamp ipAddress,Sprint 1,thuva,Medium,20/Jun/26,20/Jun/26,,database
+36,26,Task,Create Notification Collection,Fields: recipient type message read link createdAt,Sprint 1,thuva,Medium,20/Jun/26,20/Jun/26,,database
+37,26,Task,Seed Sample Data,Create seed script with sample users jobs candidates,Sprint 1,thuva,Medium,20/Jun/26,21/Jun/26,,database
+38,1,Story,Authentication System,Implement JWT authentication and role-based access,Sprint 1,thuva,Highest,18/Jun/26,22/Jun/26,13,backend
+39,38,Task,User Registration API,POST /api/auth/register validate hash password create user,Sprint 1,thuva,Highest,18/Jun/26,19/Jun/26,,backend
+40,38,Task,User Login API,POST /api/auth/login validate credentials return JWT,Sprint 1,thuva,Highest,19/Jun/26,20/Jun/26,,backend
+41,38,Task,JWT Middleware,Verify token attach user to request,Sprint 1,thuva,Highest,20/Jun/26,20/Jun/26,,backend
+42,38,Task,Role-Based Access Middleware,Check user role Admin HR Manager Employee before route access,Sprint 1,thuva,Highest,20/Jun/26,21/Jun/26,,backend
+43,38,Task,Password Encryption (bcrypt),Hash passwords on registration compare on login,Sprint 1,thuva,Highest,19/Jun/26,19/Jun/26,,backend
+44,38,Task,Token Refresh API,POST /api/auth/refresh issue new JWT,Sprint 1,thuva,High,21/Jun/26,22/Jun/26,,backend
+45,38,Task,Logout API,POST /api/auth/logout invalidate token,Sprint 1,thuva,Medium,22/Jun/26,22/Jun/26,,backend
+46,38,Task,Get Current User API,GET /api/auth/me return authenticated user profile,Sprint 1,thuva,High,22/Jun/26,22/Jun/26,,backend
+47,1,Story,UI Foundation & Dashboard,Build login registration dashboard layout and navigation,Sprint 1,divagar,High,18/Jun/26,24/Jun/26,13,frontend
+48,47,Task,Login Page UI,Email password fields login button form validation error messages,Sprint 1,divagar,Highest,18/Jun/26,19/Jun/26,,frontend
+49,47,Task,Registration Page UI,Name email password role selector submit button,Sprint 1,divagar,Highest,19/Jun/26,20/Jun/26,,frontend
+50,47,Task,Dashboard Layout,Header sidebar main content area footer,Sprint 1,divagar,Highest,20/Jun/26,22/Jun/26,,frontend
+51,47,Task,Navigation & Sidebar,Role-based menu items icons active state collapse/expand,Sprint 1,divagar,High,22/Jun/26,23/Jun/26,,frontend
+52,47,Task,Responsive Design,Mobile-friendly layout breakpoints hamburger menu,Sprint 1,divagar,High,23/Jun/26,24/Jun/26,,frontend
+53,47,Task,Redux Store Setup,Auth slice user state token management,Sprint 1,divagar,Highest,20/Jun/26,21/Jun/26,,frontend
+54,47,Task,API Service Layer,Axios instance interceptors base URL config,Sprint 1,divagar,Highest,21/Jun/26,21/Jun/26,,frontend
+55,47,Task,Protected Route Component,Redirect to login if not authenticated role-based route guard,Sprint 1,divagar,Highest,21/Jun/26,22/Jun/26,,frontend
+56,47,Task,Theme & Design System,Colors typography spacing components buttons cards inputs,Sprint 1,divagar,High,23/Jun/26,24/Jun/26,,frontend
+57,1,Story,Sprint 1 Risk Assessment,Identify and assess project risks,Sprint 1,maari,High,15/Jun/26,25/Jun/26,3,documentation
+58,57,Task,Create Risk Register,Identify top 10 project risks impact probability mitigation,Sprint 1,maari,High,15/Jun/26,17/Jun/26,,documentation
+59,57,Task,Review Authentication Security,Check JWT config password hashing CORS settings,Sprint 1,maari,High,22/Jun/26,23/Jun/26,,testing
+60,57,Task,Review Environment Security,Check .env is gitignored no secrets in code,Sprint 1,maari,High,23/Jun/26,24/Jun/26,,testing
+61,57,Task,Sprint 1 Risk Report,Document risks identified during Sprint 1,Sprint 1,maari,Medium,24/Jun/26,25/Jun/26,,documentation
+62,1,Story,Sprint 1 QA & Review,Test authentication and review UI,Sprint 1,bijon,High,23/Jun/26,26/Jun/26,5,testing
+63,62,Task,Test User Registration,Valid/invalid inputs duplicate email role assignment,Sprint 1,bijon,High,23/Jun/26,24/Jun/26,,testing
+64,62,Task,Test User Login,Correct/incorrect credentials JWT returned role verified,Sprint 1,bijon,High,24/Jun/26,24/Jun/26,,testing
+65,62,Task,Test Role-Based Access,Admin vs HR vs Manager vs Employee route access,Sprint 1,bijon,High,24/Jun/26,25/Jun/26,,testing
+66,62,Task,Review UI Consistency,Login register dashboard match design system,Sprint 1,bijon,Medium,25/Jun/26,25/Jun/26,,testing
+67,62,Task,Sprint 1 Review & Retrospective,Demo to team document lessons learned,Sprint 1,bijon,High,25/Jun/26,26/Jun/26,,documentation
+68,2,Story,Job Vacancy Management,CRUD operations for job vacancies,Sprint 2,thuva,Highest,27/Jun/26,01/Jul/26,8,backend
+69,68,Task,Create Job API,POST /api/jobs title description requirements department deadline,Sprint 2,thuva,Highest,27/Jun/26,28/Jun/26,,backend
+70,68,Task,Edit Job API,PUT /api/jobs/:id update job details,Sprint 2,thuva,High,28/Jun/26,28/Jun/26,,backend
+71,68,Task,Delete Job API,DELETE /api/jobs/:id soft delete job,Sprint 2,thuva,High,28/Jun/26,28/Jun/26,,backend
+72,68,Task,Get All Jobs API,GET /api/jobs list with pagination filtering search,Sprint 2,thuva,Highest,28/Jun/26,29/Jun/26,,backend
+73,68,Task,Get Single Job API,GET /api/jobs/:id job details with candidate count,Sprint 2,thuva,High,29/Jun/26,29/Jun/26,,backend
+74,68,Task,Job Vacancy UI - List View,Table/card view with search filter pagination,Sprint 2,divagar,Highest,27/Jun/26,29/Jun/26,,frontend
+75,68,Task,Job Vacancy UI - Create/Edit Form,Form with validation department selector deadline picker,Sprint 2,divagar,Highest,29/Jun/26,30/Jun/26,,frontend
+76,68,Task,Job Vacancy UI - Detail View,Job details page with candidate list stats,Sprint 2,divagar,High,30/Jun/26,01/Jul/26,,frontend
+77,2,Story,Candidate Management,Resume upload and candidate profile management,Sprint 2,thuva,Highest,29/Jun/26,03/Jul/26,13,backend
+78,77,Task,Resume Upload API,POST /api/candidates/upload accept PDF/DOCX store file create candidate,Sprint 2,thuva,Highest,29/Jun/26,30/Jun/26,,backend
+79,77,Task,Bulk Resume Upload API,POST /api/candidates/bulk-upload multiple CVs at once,Sprint 2,thuva,High,30/Jun/26,01/Jul/26,,backend
+80,77,Task,Candidate Profile API,GET /api/candidates/:id full profile with history documents scores,Sprint 2,thuva,High,01/Jul/26,01/Jul/26,,backend
+81,77,Task,Candidate List API,GET /api/candidates filter by job status score date,Sprint 2,thuva,Highest,01/Jul/26,02/Jul/26,,backend
+82,77,Task,Duplicate Detection API,Check email phone name+experience match before creating,Sprint 2,thuva,High,02/Jul/26,02/Jul/26,,backend
+83,77,Task,Candidate History API,GET /api/candidates/:id/history all applications interviews status changes,Sprint 2,thuva,Medium,02/Jul/26,03/Jul/26,,backend
+84,77,Task,Resume Upload UI,Drag-and-drop zone file type validation progress indicator,Sprint 2,divagar,Highest,30/Jun/26,01/Jul/26,,frontend
+85,77,Task,Candidate Profile UI,Full profile page personal info skills education experience score documents,Sprint 2,divagar,High,01/Jul/26,02/Jul/26,,frontend
+86,77,Task,Candidate List UI,Table with sorting filtering by score/status/job search,Sprint 2,divagar,High,02/Jul/26,03/Jul/26,,frontend
+87,77,Task,Duplicate Warning UI,Modal showing potential duplicates before saving,Sprint 2,divagar,Medium,03/Jul/26,03/Jul/26,,frontend
+88,2,Story,AI Resume Screening,AI-powered resume parsing scoring and ranking,Sprint 2,bijon,Highest,27/Jun/26,09/Jul/26,21,ai-service
+89,88,Task,Resume Parser Service,Python extract text from PDF/DOCX parse sections,Sprint 2,bijon,Highest,27/Jun/26,30/Jun/26,,ai-service
+90,88,Task,Skill Extraction Engine,NLP extract technical skills soft skills certifications from resume text,Sprint 2,bijon,Highest,30/Jun/26,02/Jul/26,,ai-service
+91,88,Task,Education Matching,Compare candidate education level/field with job requirements,Sprint 2,bijon,High,02/Jul/26,03/Jul/26,,ai-service
+92,88,Task,Experience Matching,Compare years of experience relevant industry job titles,Sprint 2,bijon,High,03/Jul/26,04/Jul/26,,ai-service
+93,88,Task,AI Scoring Algorithm,Weighted scoring: skills 40% experience 30% education 20% certifications 10%,Sprint 2,bijon,Highest,04/Jul/26,06/Jul/26,,ai-service
+94,88,Task,Candidate Ranking API,POST /api/ai/rank-candidates rank all candidates for a job by AI score,Sprint 2,bijon,Highest,06/Jul/26,07/Jul/26,,ai-service
+95,88,Task,Custom Filtering Criteria API,POST /api/ai/filter-config allow recruiters to adjust weights per job,Sprint 2,bijon,High,07/Jul/26,08/Jul/26,,ai-service
+96,88,Task,AI Integration with Backend,Connect Python AI service with Node.js backend via REST/HTTP,Sprint 2,bijon,Highest,08/Jul/26,09/Jul/26,,ai-service
+97,88,Task,AI Results UI - Ranking View,Ranked candidate list with scores skill match % experience match %,Sprint 2,divagar,High,06/Jul/26,08/Jul/26,,frontend
+98,88,Task,AI Results UI - Filter Config,UI for adjusting scoring weights per recruitment campaign,Sprint 2,divagar,Medium,08/Jul/26,09/Jul/26,,frontend
+99,2,Story,Recruitment Workflow,Shortlisting recruiter review and interview tracking,Sprint 2,thuva,High,05/Jul/26,09/Jul/26,8,backend
+100,99,Task,Shortlist Candidate API,PUT /api/candidates/:id/shortlist move to shortlisted status,Sprint 2,thuva,High,05/Jul/26,05/Jul/26,,backend
+101,99,Task,Recruiter Review API,PUT /api/candidates/:id/review add review notes decision,Sprint 2,thuva,High,05/Jul/26,06/Jul/26,,backend
+102,99,Task,Interview Status API,PUT /api/candidates/:id/interview schedule update interview status,Sprint 2,thuva,High,06/Jul/26,07/Jul/26,,backend
+103,99,Task,Recruiter Comments API,POST /api/candidates/:id/comments add/view recruiter notes,Sprint 2,thuva,Medium,07/Jul/26,07/Jul/26,,backend
+104,99,Task,Recruitment Pipeline UI (Kanban),Kanban board Applied Screened Shortlisted Interview Hired/Rejected,Sprint 2,divagar,High,05/Jul/26,08/Jul/26,,frontend
+105,99,Task,Recruiter Review UI,Review panel with candidate details AI score add notes approve/reject,Sprint 2,divagar,High,08/Jul/26,09/Jul/26,,frontend
+106,2,Story,Sprint 2 Risk & Security,CV data privacy and access control review,Sprint 2,maari,High,05/Jul/26,09/Jul/26,3,testing
+107,106,Task,CV Data Privacy Review,Ensure uploaded CVs are stored securely access controlled,Sprint 2,maari,High,05/Jul/26,06/Jul/26,,testing
+108,106,Task,Recruitment Access Control,Verify only HR roles can access recruitment module,Sprint 2,maari,High,06/Jul/26,07/Jul/26,,testing
+109,106,Task,AI Bias Review,Check AI scoring does not discriminate based on irrelevant factors,Sprint 2,maari,Medium,07/Jul/26,08/Jul/26,,testing
+110,106,Task,Sprint 2 Risk Report,Document risks found and mitigation actions,Sprint 2,maari,Medium,08/Jul/26,09/Jul/26,,documentation
+111,2,Story,Sprint 2 QA & Client Demo,Test recruitment module and prepare client demo,Sprint 2,bijon,High,07/Jul/26,10/Jul/26,5,testing
+112,111,Task,Test Job Vacancy CRUD,Create edit delete list jobs,Sprint 2,bijon,High,07/Jul/26,08/Jul/26,,testing
+113,111,Task,Test Resume Upload,Single/bulk upload file types error handling,Sprint 2,bijon,High,08/Jul/26,08/Jul/26,,testing
+114,111,Task,Test AI Ranking,Verify scores ranking order skill extraction accuracy,Sprint 2,bijon,Highest,08/Jul/26,09/Jul/26,,testing
+115,111,Task,Test Recruitment Workflow,Pipeline stages status changes comments,Sprint 2,bijon,High,09/Jul/26,09/Jul/26,,testing
+116,111,Task,Prepare Client Demo,Setup demo data prepare talking points,Sprint 2,bijon,High,09/Jul/26,10/Jul/26,,documentation
+117,111,Task,Client Meeting 2 - Conduct Demo,Present recruitment module to client,Sprint 2,bijon,Highest,10/Jul/26,10/Jul/26,,documentation
+118,3,Story,Employee Management Module,Employee CRUD profiles skills and performance,Sprint 3,thuva,Highest,11/Jul/26,17/Jul/26,13,backend
+119,118,Task,Create Employee API,POST /api/employees personal info department role skills contact,Sprint 3,thuva,Highest,11/Jul/26,12/Jul/26,,backend
+120,118,Task,Update Employee API,PUT /api/employees/:id edit profile skills department,Sprint 3,thuva,High,12/Jul/26,12/Jul/26,,backend
+121,118,Task,Delete Employee API,DELETE /api/employees/:id soft delete deactivate,Sprint 3,thuva,High,12/Jul/26,12/Jul/26,,backend
+122,118,Task,Get Employee List API,GET /api/employees pagination search filter by department/role/skill,Sprint 3,thuva,Highest,12/Jul/26,13/Jul/26,,backend
+123,118,Task,Get Employee Profile API,GET /api/employees/:id full profile with projects tasks performance,Sprint 3,thuva,High,13/Jul/26,13/Jul/26,,backend
+124,118,Task,Employee Skills API,PUT /api/employees/:id/skills add/update skills with proficiency,Sprint 3,thuva,High,13/Jul/26,14/Jul/26,,backend
+125,118,Task,Employee Performance API,GET /api/employees/:id/performance task completion rate project count attendance %,Sprint 3,thuva,High,14/Jul/26,15/Jul/26,,backend
+126,118,Task,Employee List UI,Table with search department filter role filter status badges,Sprint 3,divagar,Highest,11/Jul/26,14/Jul/26,,frontend
+127,118,Task,Employee Profile UI,Profile page info skills radar chart current projects recent tasks,Sprint 3,divagar,High,14/Jul/26,16/Jul/26,,frontend
+128,118,Task,Employee Create/Edit Form UI,Form with validation skill tags department selector,Sprint 3,divagar,High,16/Jul/26,17/Jul/26,,frontend
+129,4,Story,Project Management Module,Project CRUD dashboard and progress tracking,Sprint 3,thuva,Highest,15/Jul/26,21/Jul/26,13,backend
+130,129,Task,Create Project API,POST /api/projects name description manager team deadline tags,Sprint 3,thuva,Highest,15/Jul/26,16/Jul/26,,backend
+131,129,Task,Update Project API,PUT /api/projects/:id edit details team deadline,Sprint 3,thuva,High,16/Jul/26,16/Jul/26,,backend
+132,129,Task,Delete Project API,DELETE /api/projects/:id archive project,Sprint 3,thuva,Medium,16/Jul/26,16/Jul/26,,backend
+133,129,Task,Get Projects API,GET /api/projects list with status progress % team count deadline,Sprint 3,thuva,Highest,16/Jul/26,17/Jul/26,,backend
+134,129,Task,Get Project Detail API,GET /api/projects/:id full details with tasks team progress timeline,Sprint 3,thuva,High,17/Jul/26,17/Jul/26,,backend
+135,129,Task,Project Progress Calculation,Auto-calculate progress from task completion %,Sprint 3,thuva,High,17/Jul/26,18/Jul/26,,backend
+136,129,Task,Project Dashboard UI,Cards/table project name status progress bar team avatars deadline,Sprint 3,divagar,Highest,15/Jul/26,18/Jul/26,,frontend
+137,129,Task,Project Detail UI,Detail page with tasks team timeline progress chart,Sprint 3,divagar,High,18/Jul/26,20/Jul/26,,frontend
+138,129,Task,Project Create/Edit Form UI,Multi-step form details team selection deadline,Sprint 3,divagar,High,20/Jul/26,21/Jul/26,,frontend
+139,4,Story,Task Management Module,Task CRUD assignment tracking and document upload,Sprint 3,thuva,Highest,18/Jul/26,24/Jul/26,13,backend
+140,139,Task,Create Task API,POST /api/tasks title project assignee deadline priority description,Sprint 3,thuva,Highest,18/Jul/26,19/Jul/26,,backend
+141,139,Task,Update Task API,PUT /api/tasks/:id edit details reassign change deadline,Sprint 3,thuva,High,19/Jul/26,19/Jul/26,,backend
+142,139,Task,Update Task Status API,PUT /api/tasks/:id/status To Do In Progress Review Done,Sprint 3,thuva,Highest,19/Jul/26,20/Jul/26,,backend
+143,139,Task,Delete Task API,DELETE /api/tasks/:id remove task from project,Sprint 3,thuva,Medium,20/Jul/26,20/Jul/26,,backend
+144,139,Task,Get Tasks by Project API,GET /api/projects/:id/tasks all tasks for a project with filters,Sprint 3,thuva,Highest,20/Jul/26,20/Jul/26,,backend
+145,139,Task,Get My Tasks API,GET /api/tasks/my-tasks tasks assigned to current user,Sprint 3,thuva,High,20/Jul/26,21/Jul/26,,backend
+146,139,Task,Upload Task Documents API,POST /api/tasks/:id/documents upload supporting files,Sprint 3,thuva,High,21/Jul/26,21/Jul/26,,backend
+147,139,Task,Task Board UI (Kanban),Drag-and-drop Kanban board To Do In Progress Review Done,Sprint 3,divagar,Highest,18/Jul/26,22/Jul/26,,frontend
+148,139,Task,Task Detail Modal UI,Task details comments document uploads status change assignee,Sprint 3,divagar,High,22/Jul/26,23/Jul/26,,frontend
+149,139,Task,My Tasks UI,Personal task list with filters by project status priority deadline,Sprint 3,divagar,High,23/Jul/26,24/Jul/26,,frontend
+150,5,Story,AI Resource Allocation,AI-powered team recommendation for projects,Sprint 3,bijon,Highest,20/Jul/26,29/Jul/26,13,ai-service
+151,150,Task,Employee Workload Analysis API,Calculate current task count hours deadline proximity per employee,Sprint 3,bijon,Highest,20/Jul/26,22/Jul/26,,ai-service
+152,150,Task,Skill Matching Engine,Match required project skills with employee skill profiles,Sprint 3,bijon,Highest,22/Jul/26,24/Jul/26,,ai-service
+153,150,Task,Availability Calculation,Check employee current commitments leave status workload %,Sprint 3,bijon,High,24/Jul/26,25/Jul/26,,ai-service
+154,150,Task,AI Allocation Recommendation API,POST /api/ai/recommend-team given project requirements recommend best team,Sprint 3,bijon,Highest,25/Jul/26,27/Jul/26,,ai-service
+155,150,Task,Manager Override,Allow managers to accept/modify AI recommendations,Sprint 3,bijon,High,27/Jul/26,28/Jul/26,,backend
+156,150,Task,Resource Allocation UI,Recommendation panel suggested employees with match % workload skills,Sprint 3,divagar,High,25/Jul/26,28/Jul/26,,frontend
+157,150,Task,Integration with Project Creation,Trigger allocation recommendations when new project is created,Sprint 3,bijon,High,28/Jul/26,29/Jul/26,,ai-service
+158,8,Story,Risk Monitoring & Notifications,Deadline alerts workload monitoring and risk dashboard,Sprint 3,maari,High,20/Jul/26,30/Jul/26,8,backend
+159,158,Task,Overloaded Employee Detection,Identify employees with >100% workload capacity,Sprint 3,maari,High,20/Jul/26,22/Jul/26,,backend
+160,158,Task,Deadline Alert System,Detect tasks/projects approaching deadline 3 days 1 day overdue,Sprint 3,maari,High,22/Jul/26,24/Jul/26,,backend
+161,158,Task,Notification Service API,POST /api/notifications create notifications for alerts,Sprint 3,maari,High,24/Jul/26,25/Jul/26,,backend
+162,158,Task,Notification API,GET /api/notifications get user notifications mark as read,Sprint 3,maari,High,25/Jul/26,26/Jul/26,,backend
+163,158,Task,Risk Dashboard API,GET /api/risk/dashboard overdue tasks overloaded employees at-risk projects,Sprint 3,maari,High,26/Jul/26,28/Jul/26,,backend
+164,158,Task,Notification Bell UI,Real-time notification dropdown in header,Sprint 3,divagar,High,26/Jul/26,28/Jul/26,,frontend
+165,158,Task,Risk Dashboard UI,Visual dashboard risk cards overdue tasks overloaded employees,Sprint 3,maari,High,28/Jul/26,30/Jul/26,,frontend
+166,9,Story,Sprint 3 QA & Internal Review,Test all Sprint 3 modules and conduct internal review,Sprint 3,bijon,High,28/Jul/26,31/Jul/26,5,testing
+167,166,Task,Test Employee CRUD,Create update delete search employees,Sprint 3,bijon,High,28/Jul/26,29/Jul/26,,testing
+168,166,Task,Test Project Management,CRUD progress calculation team management,Sprint 3,bijon,High,29/Jul/26,29/Jul/26,,testing
+169,166,Task,Test Task Management,Create assign status changes document upload,Sprint 3,bijon,High,29/Jul/26,30/Jul/26,,testing
+170,166,Task,Test AI Allocation,Recommendation accuracy workload calculation,Sprint 3,bijon,Highest,30/Jul/26,30/Jul/26,,testing
+171,166,Task,Integration Testing Sprint 1-3,All Sprint 1-3 modules working together,Sprint 3,bijon,Highest,30/Jul/26,31/Jul/26,,testing
+172,166,Task,Internal Sprint Review,Demo to team retrospective,Sprint 3,bijon,High,31/Jul/26,31/Jul/26,,documentation
+173,6,Story,Attendance Management,Clock in/out leave requests and attendance tracking,Sprint 4,thuva,Highest,01/Aug/26,06/Aug/26,13,backend
+174,173,Task,Clock In API,POST /api/attendance/clock-in record clock-in time validate no duplicate,Sprint 4,thuva,Highest,01/Aug/26,02/Aug/26,,backend
+175,173,Task,Clock Out API,POST /api/attendance/clock-out record clock-out calculate hours worked,Sprint 4,thuva,Highest,02/Aug/26,02/Aug/26,,backend
+176,173,Task,Attendance History API,GET /api/attendance filter by employee date range department,Sprint 4,thuva,High,02/Aug/26,03/Aug/26,,backend
+177,173,Task,Working Hours Calculation,Auto-calculate total hours overtime late arrival early departure,Sprint 4,thuva,Highest,03/Aug/26,04/Aug/26,,backend
+178,173,Task,Attendance Percentage API,Calculate monthly attendance % per employee,Sprint 4,thuva,High,04/Aug/26,04/Aug/26,,backend
+179,173,Task,Leave Request API,POST /api/leaves submit leave request with type dates reason,Sprint 4,thuva,High,04/Aug/26,05/Aug/26,,backend
+180,173,Task,Leave Approval API,PUT /api/leaves/:id/approve manager approve/reject with comment,Sprint 4,thuva,High,05/Aug/26,05/Aug/26,,backend
+181,173,Task,Leave History API,GET /api/leaves filter by employee type status date,Sprint 4,thuva,Medium,05/Aug/26,05/Aug/26,,backend
+182,173,Task,Clock In/Out UI,Large clock-in/out button current status today hours timer,Sprint 4,divagar,Highest,01/Aug/26,03/Aug/26,,frontend
+183,173,Task,Attendance History UI,Calendar view + table filter by date range export,Sprint 4,divagar,High,03/Aug/26,05/Aug/26,,frontend
+184,173,Task,Leave Request UI,Form leave type date range reason submit status tracking,Sprint 4,divagar,High,05/Aug/26,06/Aug/26,,frontend
+185,173,Task,Leave Approval UI,Manager view pending requests approve/reject with comments,Sprint 4,divagar,High,06/Aug/26,06/Aug/26,,frontend
+186,7,Story,Reports & Dashboards,Analytics dashboards and downloadable reports,Sprint 4,divagar,High,05/Aug/26,10/Aug/26,13,frontend
+187,186,Task,Recruitment Reports API,GET /api/reports/recruitment total applicants hired rejected avg score,Sprint 4,thuva,High,05/Aug/26,06/Aug/26,,backend
+188,186,Task,Attendance Reports API,GET /api/reports/attendance per employee department date range,Sprint 4,thuva,High,06/Aug/26,06/Aug/26,,backend
+189,186,Task,Employee Performance Reports API,GET /api/reports/employees task completion project involvement attendance,Sprint 4,thuva,High,06/Aug/26,07/Aug/26,,backend
+190,186,Task,Project Reports API,GET /api/reports/projects status progress team timeline overdue tasks,Sprint 4,thuva,High,07/Aug/26,07/Aug/26,,backend
+191,186,Task,Resource Utilization Reports API,GET /api/reports/resources workload distribution skill utilization,Sprint 4,thuva,Medium,07/Aug/26,08/Aug/26,,backend
+192,186,Task,Dashboard Analytics UI,Charts bar pie line KPI cards statistics overview,Sprint 4,divagar,High,05/Aug/26,08/Aug/26,,frontend
+193,186,Task,Recruitment Dashboard UI,Applicant funnel hiring rate job-wise stats,Sprint 4,divagar,High,08/Aug/26,09/Aug/26,,frontend
+194,186,Task,Attendance Dashboard UI,Attendance trends late arrivals chart leave summary,Sprint 4,divagar,High,09/Aug/26,09/Aug/26,,frontend
+195,186,Task,PDF Report Export,Generate downloadable PDF reports,Sprint 4,divagar,High,09/Aug/26,10/Aug/26,,frontend
+196,186,Task,Excel Report Export,Generate downloadable Excel spreadsheets,Sprint 4,divagar,Medium,10/Aug/26,10/Aug/26,,frontend
+197,8,Story,Activity Logs,Track all user actions across the system,Sprint 4,maari,High,01/Aug/26,07/Aug/26,5,backend
+198,197,Task,Activity Log Middleware,Automatically log user actions across all modules,Sprint 4,maari,High,01/Aug/26,03/Aug/26,,backend
+199,197,Task,Activity Log API,GET /api/activity-logs filter by user module action date,Sprint 4,maari,High,03/Aug/26,04/Aug/26,,backend
+200,197,Task,Login/Logout Logs,Track all authentication events,Sprint 4,maari,High,04/Aug/26,04/Aug/26,,backend
+201,197,Task,Attendance Logs,Track clock-in/out leave approvals,Sprint 4,maari,Medium,04/Aug/26,05/Aug/26,,backend
+202,197,Task,Assignment Logs,Track employee-project and employee-task assignments,Sprint 4,maari,Medium,05/Aug/26,05/Aug/26,,backend
+203,197,Task,Activity Log UI,Searchable filterable log table with timestamps users actions,Sprint 4,maari,High,05/Aug/26,07/Aug/26,,frontend
+204,9,Story,System Integration,Merge all modules and verify end-to-end,Sprint 4,thuva,Highest,08/Aug/26,11/Aug/26,8,backend
+205,204,Task,Merge All Modules,Ensure all routes controllers models work together,Sprint 4,thuva,Highest,08/Aug/26,09/Aug/26,,backend
+206,204,Task,API Integration Verification,Test all API endpoints end-to-end,Sprint 4,thuva,Highest,09/Aug/26,10/Aug/26,,backend
+207,204,Task,AI Service Integration,Verify Python AI service communicates correctly with Node.js backend,Sprint 4,thuva,Highest,10/Aug/26,10/Aug/26,,ai-service
+208,204,Task,Database Integrity Check,Verify all references indexes no orphaned records,Sprint 4,thuva,High,10/Aug/26,11/Aug/26,,database
+209,204,Task,Frontend-Backend Integration,All UI pages connected to APIs error handling loading states,Sprint 4,divagar,Highest,09/Aug/26,11/Aug/26,,frontend
+210,204,Task,Cross-module Navigation,Dashboard links to all modules breadcrumbs back navigation,Sprint 4,divagar,High,11/Aug/26,11/Aug/26,,frontend
+211,9,Story,Testing & Quality Assurance,Comprehensive testing across all modules,Sprint 4,bijon,Highest,08/Aug/26,14/Aug/26,13,testing
+212,211,Task,Unit Testing - Auth Module,Test login register JWT RBAC,Sprint 4,bijon,High,08/Aug/26,09/Aug/26,,testing
+213,211,Task,Unit Testing - Recruitment Module,Test job CRUD candidate CRUD AI ranking,Sprint 4,bijon,High,09/Aug/26,09/Aug/26,,testing
+214,211,Task,Unit Testing - Employee Module,Test CRUD profile skills performance,Sprint 4,bijon,High,09/Aug/26,10/Aug/26,,testing
+215,211,Task,Unit Testing - Project/Task Module,Test CRUD status changes document upload,Sprint 4,bijon,High,10/Aug/26,10/Aug/26,,testing
+216,211,Task,Unit Testing - Attendance Module,Test clock in/out hours calculation leave workflow,Sprint 4,bijon,High,10/Aug/26,11/Aug/26,,testing
+217,211,Task,Integration Testing,Test all modules working together data flow,Sprint 4,bijon,Highest,11/Aug/26,12/Aug/26,,testing
+218,211,Task,End-to-End Testing,Full user journey register login create project assign track report,Sprint 4,bijon,Highest,12/Aug/26,12/Aug/26,,testing
+219,211,Task,Security Testing,RBAC verification XSS CSRF input validation,Sprint 4,maari,High,11/Aug/26,12/Aug/26,,testing
+220,211,Task,Performance Testing,API response times concurrent users database query optimization,Sprint 4,bijon,Medium,12/Aug/26,13/Aug/26,,testing
+221,211,Task,Bug Fixing,Fix all critical and high priority bugs,Sprint 4,bijon,Highest,12/Aug/26,13/Aug/26,,bug
+222,211,Task,Final QA Sign-off,Verify all bugs fixed acceptance criteria met,Sprint 4,bijon,Highest,13/Aug/26,14/Aug/26,,testing
+223,9,Story,Deployment Preparation,Setup production environment and final demo build,Sprint 4,divagar,High,11/Aug/26,14/Aug/26,5,deployment
+224,223,Task,Production Environment Setup,Configure production server domain SSL,Sprint 4,divagar,High,11/Aug/26,12/Aug/26,,deployment
+225,223,Task,Environment Variables Configuration,Set production env vars for all services,Sprint 4,divagar,High,12/Aug/26,12/Aug/26,,deployment
+226,223,Task,Build Frontend for Production,npm run build verify production bundle,Sprint 4,divagar,High,12/Aug/26,13/Aug/26,,deployment
+227,223,Task,Build Backend for Production,Test with production database verify APIs,Sprint 4,divagar,High,13/Aug/26,13/Aug/26,,deployment
+228,223,Task,Final Demo Build,Prepare demo-ready build with sample data,Sprint 4,divagar,Highest,13/Aug/26,14/Aug/26,,deployment
+229,9,Story,Client Meeting 3 - Final Acceptance,Demo complete system and obtain client sign-off,Sprint 4,bijon,Highest,12/Aug/26,14/Aug/26,3,documentation
+230,229,Task,Prepare Demo Script,Step-by-step demo walkthrough for all modules,Sprint 4,bijon,High,12/Aug/26,13/Aug/26,,documentation
+231,229,Task,Prepare Demo Data,Realistic data for all modules,Sprint 4,thuva,High,13/Aug/26,13/Aug/26,,database
+232,229,Task,Client Presentation,Demo complete system to client,Sprint 4,bijon,Highest,14/Aug/26,14/Aug/26,,documentation
+233,229,Task,Collect Final Feedback,Document client feedback and minor fixes,Sprint 4,bijon,High,14/Aug/26,14/Aug/26,,documentation
+234,10,Story,Project Documentation - Divagar,Sprint reports deployment summary and presentation,Week 10,divagar,Highest,15/Aug/26,21/Aug/26,5,documentation
+235,234,Task,Final Project Report,Complete project report with all phases,Week 10,divagar,Highest,15/Aug/26,17/Aug/26,,documentation
+236,234,Task,Sprint Reports (All 4 Sprints),Sprint review summaries and burndown data,Week 10,divagar,High,15/Aug/26,16/Aug/26,,documentation
+237,234,Task,Deployment Summary,Document deployment process and configuration,Week 10,divagar,High,17/Aug/26,18/Aug/26,,documentation
+238,234,Task,Presentation Slides (PPT),Create final presentation for project demo,Week 10,divagar,Highest,18/Aug/26,20/Aug/26,,documentation
+239,234,Task,Final Demo Preparation,Prepare system for final demonstration,Week 10,divagar,Highest,20/Aug/26,21/Aug/26,,documentation
+240,10,Story,Technical Documentation - Thuva,Architecture API and database documentation,Week 10,thuva,Highest,15/Aug/26,21/Aug/26,5,documentation
+241,240,Task,Architecture Diagram (Final),Complete system architecture diagram,Week 10,thuva,Highest,15/Aug/26,16/Aug/26,,documentation
+242,240,Task,ER Diagram (Final),Complete entity-relationship diagram,Week 10,thuva,Highest,16/Aug/26,17/Aug/26,,documentation
+243,240,Task,API Documentation (All Endpoints),Document all REST API endpoints with examples,Week 10,thuva,Highest,17/Aug/26,19/Aug/26,,documentation
+244,240,Task,Installation Guide,Step-by-step setup and installation guide,Week 10,thuva,High,19/Aug/26,20/Aug/26,,documentation
+245,240,Task,Database Schema Documentation,Document all collections fields and relationships,Week 10,thuva,High,20/Aug/26,21/Aug/26,,documentation
+246,10,Story,QA Documentation - Bijon,SRS test report user manual and QA documentation,Week 10,bijon,Highest,15/Aug/26,21/Aug/26,5,documentation
+247,246,Task,SRS (Software Requirements Specification),Complete SRS document,Week 10,bijon,Highest,15/Aug/26,17/Aug/26,,documentation
+248,246,Task,Test Report (All Test Results),Document all test cases and results,Week 10,bijon,Highest,17/Aug/26,18/Aug/26,,documentation
+249,246,Task,QA Report,Quality assurance summary report,Week 10,bijon,High,18/Aug/26,19/Aug/26,,documentation
+250,246,Task,User Manual,Complete user manual for all system features,Week 10,bijon,High,19/Aug/26,20/Aug/26,,documentation
+251,246,Task,Final System Review,Verify system is ready for presentation,Week 10,bijon,Highest,20/Aug/26,21/Aug/26,,documentation
+252,10,Story,Risk Documentation - Maari,Risk report lessons learned and project closure,Week 10,maari,High,15/Aug/26,21/Aug/26,3,documentation
+253,252,Task,Risk Report (All Sprints),Consolidated risk report from all sprints,Week 10,maari,High,15/Aug/26,17/Aug/26,,documentation
+254,252,Task,Lessons Learned,Document project lessons and improvements,Week 10,maari,High,17/Aug/26,18/Aug/26,,documentation
+255,252,Task,Project Closure Report,Project closure and handover documentation,Week 10,maari,High,18/Aug/26,20/Aug/26,,documentation
+256,252,Task,Security Audit Report,Final security assessment report,Week 10,maari,High,20/Aug/26,21/Aug/26,,documentation
