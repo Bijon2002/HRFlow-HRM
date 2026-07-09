@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import hrFlowLogo from '../../assets/HR-Flow.png';
 
 const PublicLayout = () => {
   const loc = useLocation();
@@ -19,8 +20,8 @@ const PublicLayout = () => {
       <header className="sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant shadow-sm">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-on-primary font-bold text-sm">HR</span>
+            <div className="bg-white p-1 rounded-md shadow-sm border border-slate-100">
+              <img src={hrFlowLogo} alt="HRFlow Logo" className="h-7 w-auto object-contain" />
             </div>
             <span className="font-headline-sm text-headline-sm text-primary font-bold">HRFlow</span>
           </Link>
@@ -73,7 +74,7 @@ const PublicLayout = () => {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-primary-container text-center">
-          <p className="font-body-md text-body-md text-primary-fixed-dim">© 2026 HRFlow Inc. All rights reserved.</p>
+          <p className="font-body-md text-body-md text-primary-fixed-dim">© 2024-2026 HRFlow Inc. All rights reserved.</p>
         </div>
       </footer>
     </div>
