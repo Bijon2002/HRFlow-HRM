@@ -1,79 +1,129 @@
-# HRFlow - The HRM System
+# HR-Flow: AI-Powered Human Resource Management (HRM) Platform
 
-Welcome to **HRFlow**, a modern Human Resource Management (HRM) system built using the MERN stack (MongoDB, Express, React, Node.js).
+HR-Flow is a comprehensive, enterprise-ready Human Resource Management (HRM) system designed to streamline recruitment, employee tracking, task allocation, and performance monitoring. Leveraging a modern web stack and intelligent AI engines, HR-Flow optimizes resource utilization, automates candidate screening, and alerts teams to potential operational risks.
 
 ---
 
-## 📁 Project Folder Structure
+## 🏛️ Architecture Overview
 
-The project is structured as a monorepo splitting the backend (`server`) and the frontend (`client`).
+The system is structured as a decoupled monorepo comprising three core services:
 
-```text
+```mermaid
+graph TD
+    Client[React Frontend - client/] -->|HTTP/REST| Server[Express Backend - server/]
+    Server -->|Read/Write| DB[(MongoDB Database)]
+    Server -->|Internal REST API| AIService[Python AI Service - ai-service/]
+```
+
+- **Frontend (`/client`)**: React single-page application built with Vite, TypeScript, Tailwind CSS, and Redux Toolkit.
+- **Backend (`/server`)**: Express.js server providing RESTful APIs, JWT role-based authentication, and orchestration.
+- **AI Service (`/ai-service`)**: Python microservice (FastAPI/Flask) containing the NLP-based Resume Parser and candidate-to-job matching algorithms.
+- **Database**: MongoDB (Mongoose ORM) for persistent data storage.
+
+---
+
+## 🚀 Key Features
+
+- **AI-Powered CV Parsing & Filtering**: Automated resume text extraction and skill/education mapping matching active Job Descriptions.
+- **Employee & Profile Management**: Comprehensive tracking of employee records, skills, departments, and roles.
+- **Project & Task Allocation**: Interactive boards for managing projects, task assignments, and progress monitoring.
+- **AI Resource Allocation**: Smart recommendation engine advising manager on optimal team allocation based on availability, workload, and skillsets.
+- **Attendance & Leave Management**: Track clock-ins, clock-outs, total working hours, and automated leave request/approval workflow.
+- **Risk Dashboard & Notifications**: Alerts for overloaded employees, looming deadlines, activity logs, and system auditing.
+- **Reporting & Analytics**: Comprehensive dashboards and downloadable summary reports (CSV/PDF).
+
+---
+
+## 📁 Repository Structure
+
+```
 HRFlow-HRM/
-├── client/                     # Frontend Application (React.js)
-│   ├── public/                 # Static public assets
-│   └── src/                    # React source code
-│       ├── assets/             # Images, logos, fonts
-│       ├── components/         # Reusable UI components (Buttons, Cards, Navs)
-│       ├── context/            # React context API for global state (e.g. Auth)
-│       ├── hooks/              # Custom React hooks
-│       ├── pages/              # View components representing full pages (Dashboard, etc.)
-│       ├── services/           # Axios/Fetch API requests configuration
-│       ├── utils/              # Client-side helper functions
-│       ├── App.jsx             # Main Application Router/Layout
-│       └── main.jsx            # Application entry point
-│
-├── server/                     # Backend API (Node.js & Express)
-│   ├── config/                 # Configurations (e.g. MongoDB connection, env loader)
-│   ├── controllers/            # Controller logic for handling route requests
-│   ├── middleware/             # Express middlewares (Authentication, logging, errors)
-│   ├── models/                 # Mongoose schemas/models (Employee, User, Leave, etc.)
-│   ├── routes/                 # Express route definitions
-│   ├── utils/                  # Helper/Utility files for the server
-│   ├── .env.example            # Environment variables template
-│   └── server.js               # Express server entry point
-│
-└── .gitignore                  # Git ignore patterns
+├── client/                 # React frontend (Vite + TypeScript)
+│   ├── src/                # Component & state logic
+│   └── package.json
+├── server/                 # Express.js backend API
+│   ├── models/             # Mongoose schemas
+│   ├── routes/             # Express routes & middlewares
+│   └── package.json
+├── ai-service/             # FastAPI/Flask AI Microservice
+│   ├── parsers/            # Resume NLP parsing models
+│   └── requirements.txt    # Python dependencies
+├── docs/                   # Backlog CSVs, diagrams, and guides
+│   ├── github_setup_guide.md
+│   └── jira_import.csv
+└── .github/                # PR & Issue templates
 ```
 
 ---
 
-## 🚀 Getting Started
+## ⚙️ Quick Start & Installation
 
 ### 1. Prerequisites
-- [Node.js](https://nodejs.org/) installed
-- [MongoDB](https://www.mongodb.com/) running locally or a MongoDB Atlas URI
+- [Node.js](https://nodejs.org/) (v18+)
+- [Python](https://www.python.org/) (v3.10+)
+- [MongoDB](https://www.mongodb.com/) (Local or Atlas Instance)
+- [GitHub CLI](https://cli.github.com/) (For project management synchronization)
 
-### 2. Setting Up the Server
-1. Navigate to the server folder:
-   ```bash
-   cd server
-   ```
-2. Initialize and install dependencies:
-   ```bash
-   npm init -y
-   npm install express mongoose dotenv cors jsonwebtoken bcryptjs
-   ```
-3. Create your `.env` file based on `.env.example`:
-   ```bash
-   cp .env.example .env
-   ```
-4. Start the development server:
-   ```bash
-   node server.js
-   ```
+---
 
-### 3. Setting Up the Client
-1. Navigate to the client folder:
+### 2. Service Setup
+
+#### 💻 Frontend (`/client`)
+1. Navigate to the client directory:
    ```bash
    cd client
    ```
-2. Initialize React (using Vite):
+2. Install dependencies:
    ```bash
-   npm create vite@latest . -- --template react
    npm install
    ```
-3. Start the Vite development server:
+3. Create a `.env` file based on environment requirements and run in development mode:
    ```bash
    npm run dev
    ```
+
+#### ⚙️ Backend (`/server`)
+1. Navigate to the server directory:
+   ```bash
+   cd server
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Setup your `.env` configuration (MongoDB URI, JWT secret, and port).
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+#### 🤖 AI Service (`/ai-service`)
+1. Navigate to the AI service directory:
+   ```bash
+   cd ai-service
+   ```
+2. Set up a Python virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Start the service:
+   ```bash
+   python app.py
+   ```
+
+---
+
+## 🤝 Development Workflow & Guidelines
+
+Our team follows strict branch naming conventions and automated board workflows:
+- **Main Branch**: `main` (Stable/Production)
+- **Development Branch**: `dev` (Sprint Integration)
+- **Feature Branches**: `feature/<story-number>-<short-description>`
+- **Bugfixes**: `bugfix/<issue-number>-<short-description>`
+
+Please consult our [GitHub Setup & Workflow Guide](file:///a:/HRFlow-HRM/docs/github_setup_guide.md) for detailed information regarding team allocations, automation columns, and running our Jira-to-GitHub issue importer script.
