@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react';
 import loginBanner from '../../assets/auth_login_banner.png';
+import hrFlowLogo from '../../assets/HR-Flow.png';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -68,9 +69,9 @@ const Login = () => {
         </div>
 
         {/* Top Header */}
-        <div className="relative z-10 flex items-center gap-2.5">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-teal-400 to-blue-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
-            <ShieldCheck className="h-5 w-5 text-slate-950 stroke-[2.5]" />
+        <Link to="/" className="relative z-10 flex items-center gap-2.5 hover:opacity-90 transition-opacity no-underline hover:no-underline text-left">
+          <div className="bg-white p-1.5 rounded-xl shadow-lg shadow-teal-500/10 border border-slate-100">
+            <img src={hrFlowLogo} alt="HRFlow Logo" className="h-8 w-auto object-contain" />
           </div>
           <div>
             <h1 className="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
@@ -80,7 +81,7 @@ const Login = () => {
               Enterprise v2.4
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Bottom Banner Content */}
         <div className="relative z-10 space-y-6 max-w-md">
@@ -111,7 +112,7 @@ const Login = () => {
 
         {/* Bottom Footer */}
         <div className="relative z-10 text-xs text-slate-500">
-          © 2026 HRFlow Inc. All rights reserved.
+          © 2024-2026 HRFlow Inc. All rights reserved.
         </div>
       </div>
 
@@ -119,14 +120,14 @@ const Login = () => {
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 sm:p-12 md:p-20 bg-slate-50">
         
         {/* Mobile Header Branding */}
-        <div className="lg:hidden flex items-center gap-2.5 mb-8">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-teal-400 to-blue-600 flex items-center justify-center shadow-lg">
-            <ShieldCheck className="h-5 w-5 text-slate-950 stroke-[2.5]" />
+        <Link to="/" className="lg:hidden flex items-center gap-2.5 mb-8 hover:opacity-90 transition-opacity no-underline hover:no-underline text-left">
+          <div className="bg-white p-1.5 rounded-xl shadow-lg border border-slate-100">
+            <img src={hrFlowLogo} alt="HRFlow Logo" className="h-7 w-auto object-contain" />
           </div>
           <h1 className="font-extrabold text-xl tracking-tight text-slate-900">
             HRFlow
           </h1>
-        </div>
+        </Link>
 
         <div className="w-full max-w-[420px] space-y-6">
           
@@ -281,7 +282,7 @@ const Login = () => {
           </div>
           
           <p className="lg:hidden text-center text-[10px] text-slate-400 font-medium">
-            © 2026 HRFlow Inc. All rights reserved.
+            © 2024-2026 HRFlow Inc. All rights reserved.
           </p>
 
         </div>

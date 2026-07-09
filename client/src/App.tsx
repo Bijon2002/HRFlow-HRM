@@ -32,6 +32,9 @@ import ApplicantList from './pages/hr/ApplicantList';
 import CVScreening from './pages/hr/CVScreening';
 import InterviewSchedule from './pages/hr/InterviewSchedule';
 import ManageEmployees from './pages/hr/ManageEmployees';
+import AttendanceTracking from './pages/hr/AttendanceTracking';
+import ProjectAssignment from './pages/hr/ProjectAssignment';
+import ConductInterview from './pages/hr/ConductInterview';
 
 // Employee Pages
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
@@ -65,7 +68,6 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
-        <Route path="/hr/dashboard" element={<HRDashboard />} />
 
         {/* Public Routes */}
         <Route path="/" element={<PublicLayout />}>
@@ -93,11 +95,15 @@ const App = () => {
         {/* HR Routes */}
         <Route path="/hr" element={<DashboardLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<HRDashboard />} />
           <Route path="vacancies" element={<ManageVacancies />} />
           <Route path="applicants" element={<ApplicantList />} />
           <Route path="cv-screening" element={<CVScreening />} />
           <Route path="interviews" element={<InterviewSchedule />} />
+          <Route path="conduct-interview" element={<ConductInterview />} />
           <Route path="employees" element={<ManageEmployees />} />
+          <Route path="attendance" element={<AttendanceTracking />} />
+          <Route path="projects" element={<ProjectAssignment />} />
         </Route>
 
         {/* Employee Routes */}

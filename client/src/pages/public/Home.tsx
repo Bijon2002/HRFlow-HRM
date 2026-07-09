@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import hrFlowLogo from '../../assets/HR-Flow.png';
 import { ArrowRight } from 'lucide-react';
 
 const Home = () => {
@@ -8,9 +9,12 @@ const Home = () => {
       
 {/**/}
 <header className="fixed top-0 left-0 w-full bg-surface/90 backdrop-blur-sm border-b border-outline-variant z-50 h-header_height flex justify-between items-center px-margin_mobile md:px-margin_desktop transition-all duration-300">
-<div className="flex items-center gap-3">
-<span className="font-headline-md text-headline-md font-bold text-primary tracking-tight">HRFlow</span>
-</div>
+<Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity no-underline hover:no-underline text-left">
+  <div className="bg-white p-1 rounded-md shadow-sm border border-slate-100">
+    <img src={hrFlowLogo} alt="HRFlow Logo" className="h-7 w-auto object-contain" />
+  </div>
+  <span className="font-headline-md text-headline-md font-bold text-primary tracking-tight">HRFlow</span>
+</Link>
 <nav className="hidden md:flex items-center gap-stack_lg">
 <a className="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Features</a>
 <a className="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Solutions</a>
@@ -164,7 +168,12 @@ const Home = () => {
 <div className="container mx-auto px-margin_mobile md:px-margin_desktop">
 <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-8">
 <div className="col-span-1 md:col-span-1 flex flex-col gap-stack_sm">
-<span className="font-headline-md text-headline-md font-bold text-primary tracking-tight">HRFlow</span>
+<Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity no-underline hover:no-underline text-left mb-2">
+  <div className="bg-white p-1 rounded-md shadow-sm border border-slate-100">
+    <img src={hrFlowLogo} alt="HRFlow Logo" className="h-6 w-auto object-contain" />
+  </div>
+  <span className="font-headline-md text-headline-md font-bold text-primary tracking-tight">HRFlow</span>
+</Link>
 <p className="font-body-md text-body-md text-on-surface-variant mt-2">
                         Empowering enterprises to build and manage world-class teams.
                     </p>
@@ -189,7 +198,7 @@ const Home = () => {
 </div>
 <div className="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-stack_md">
 <p className="font-body-md text-body-md text-on-surface-variant text-sm">
-                    © 2024 HRFlow Inc. All rights reserved.
+                    © 2024-2026 HRFlow Inc. All rights reserved.
                 </p>
 <div className="flex items-center gap-4">
 {/**/}
