@@ -1,92 +1,285 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react';
+import loginBanner from '../../assets/auth_login_banner.png';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Quick validation
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    setIsLoading(true);
+    setError('');
+
+    // Simulate authentication API call
+    setTimeout(() => {
+      setIsLoading(false);
+      // Determine dashboard route based on simple rules or defaults
+      if (email.includes('admin')) {
+        navigate('/admin/dashboard');
+      } else if (email.includes('hr')) {
+        navigate('/hr/dashboard');
+      } else if (email.includes('employee')) {
+        navigate('/employee/dashboard');
+      } else {
+        navigate('/candidate/dashboard');
+      }
+    }, 1500);
+  };
+
   return (
-    <div className="w-full h-full">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex font-sans">
       
-<div className="flex min-h-full">
-{/**/}
-<div className="hidden lg:flex lg:flex-1 flex-col justify-between bg-primary relative overflow-hidden">
-{/**/}
-<div className="absolute inset-0 opacity-10 pointer-events-none" style={{"backgroundImage":"radial-gradient(circle at 10% 20%, #ffffff 1px, transparent 1px)","backgroundSize":"24px 24px"}}></div>
-<div className="relative z-10 p-12 h-full flex flex-col justify-between">
-<div>
-<h1 className="font-headline-lg text-headline-lg font-black text-on-primary">HRFlow</h1>
-<p className="font-headline-sm text-headline-sm text-primary-fixed-dim mt-2 max-w-md">The unified management suite for high-stakes recruitment.</p>
-</div>
-<div className="w-full h-96 rounded-xl overflow-hidden shadow-2xl border border-primary-container relative">
-<img className="absolute inset-0 w-full h-full object-cover" data-alt="A sophisticated digital 3D illustration representing human resource management and recruitment workflows. Abstract representations of candidate profiles, connected by glowing digital lines, forming a network over a dark navy blue grid background. The lighting is high-key and professional, emphasizing efficiency and precision in a modern corporate setting. The overall mood is authoritative yet approachable, using a palette dominated by deep navy blue, crisp whites, and subtle glowing cyan accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj-kksHJvY3EQcTaRykYR32dyKeD4o3hWfOwhJ3dRrc0afTAKzxQ8_GAgXqmxiwHO47C9WZFHa4dvrKI0JyawDPlXxDHit-NYFdLl6njRTCMruN1lw2tu-LPEZd2nMM_h3FKqJXOl0mUBqFGj-_yCcjNLHGsHPg5Z8AQTTruzmVndqcFJOyoDxtLlYzuMOXAFOLOFR9NtTMeMYkzdiM6-I67gpqi8kegl9frSCYqUGYdRgYPyo5l2iNA"/>
-<div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
-<div className="absolute bottom-6 left-6 right-6">
-<p className="font-body-lg text-body-lg text-on-primary italic">"Streamlining our hiring process by 40% in the first quarter."</p>
-</div>
-</div>
-</div>
-</div>
-{/**/}
-<div className="flex flex-1 flex-col justify-center items-center px-4 py-12 sm:px-6 lg:flex-none lg:w-[600px] lg:px-20 bg-surface">
-<div className="mx-auto w-full max-w-[420px]">
-{/**/}
-<div className="lg:hidden mb-8 text-center">
-<h1 className="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary">HRFlow</h1>
-</div>
-<div className="bg-surface-container-lowest py-8 px-6 shadow-sm border border-outline-variant rounded-xl">
-<h2 className="font-headline-md text-headline-md text-on-background text-center mb-6">Welcome back to HRFlow</h2>
-<form action="#" className="space-y-6" method="POST">
-<div>
-<label className="block font-label-md text-label-md text-on-surface-variant mb-1" htmlFor="email">Email address</label>
-<div className="mt-1">
-<input autoComplete="email" className="block w-full rounded-md border border-outline-variant bg-surface px-3 py-2 text-on-background shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm transition-colors" id="email" name="email" required type="email"/>
-</div>
-</div>
-<div>
-<label className="block font-label-md text-label-md text-on-surface-variant mb-1" htmlFor="password">Password</label>
-<div className="mt-1 relative rounded-md shadow-sm">
-<input autoComplete="current-password" className="block w-full rounded-md border border-outline-variant bg-surface px-3 py-2 pr-10 text-on-background shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm transition-colors" id="password" name="password" required type="password"/>
-<button className="absolute inset-y-0 right-0 px-3 flex items-center text-on-surface-variant hover:text-primary transition-colors focus:outline-none" onClick="togglePassword()" type="button">
-<span className="material-symbols-outlined" data-icon="visibility" id="visibility-icon">visibility</span>
-</button>
-</div>
-</div>
-<div className="flex items-center justify-between">
-<div className="flex items-center">
-<input className="h-4 w-4 rounded border-outline-variant text-primary focus:ring-primary" id="remember-me" name="remember-me" type="checkbox"/>
-<label className="ml-2 block font-body-md text-body-md text-on-surface-variant" htmlFor="remember-me">Remember me</label>
-</div>
-<div className="text-sm">
-<a className="font-label-md text-label-md text-primary hover:text-primary-container transition-colors" href="#">Forgot password?</a>
-</div>
-</div>
-<div>
-<button className="flex w-full justify-center rounded-md border border-transparent bg-primary-container py-2.5 px-4 font-label-md text-label-md text-on-primary shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all" type="submit">
-                                Log In
-                            </button>
-</div>
-</form>
-<div className="mt-6">
-<div className="relative">
-<div className="absolute inset-0 flex items-center">
-<div className="w-full border-t border-outline-variant"></div>
-</div>
-<div className="relative flex justify-center text-sm">
-<span className="bg-surface-container-lowest px-2 text-on-surface-variant font-body-md text-body-md">New candidate?</span>
-</div>
-</div>
-<div className="mt-6">
-<a className="flex w-full justify-center rounded-md border border-outline-variant bg-surface py-2.5 px-4 font-label-md text-label-md text-primary shadow-sm hover:bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all" href="/signup">
-                                Create an account
-                            </a>
-</div>
-</div>
-</div>
-<p className="mt-8 text-center text-xs text-on-surface-variant">
-                    © 2024 HRFlow Inc. All rights reserved.
-                </p>
-</div>
-</div>
-</div>
+      {/* Left Banner Section (Desktop Only) */}
+      <div className="relative hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-slate-950 overflow-hidden text-white">
+        
+        {/* Glow ambient background elements */}
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-teal-500/10 blur-[130px] pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/15 blur-[120px] pointer-events-none"></div>
 
+        {/* Brand Banner Image Background */}
+        <div className="absolute inset-0 z-0 opacity-40 mix-blend-lighten">
+          <img 
+            src={loginBanner} 
+            alt="HRFlow Workflow Banner" 
+            className="w-full h-full object-cover transition-transform duration-[10000ms] hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950"></div>
+        </div>
 
+        {/* Top Header */}
+        <div className="relative z-10 flex items-center gap-2.5">
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-teal-400 to-blue-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
+            <ShieldCheck className="h-5 w-5 text-slate-950 stroke-[2.5]" />
+          </div>
+          <div>
+            <h1 className="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+              HRFlow
+            </h1>
+            <span className="text-[10px] text-teal-400 font-bold uppercase tracking-widest bg-teal-950/60 border border-teal-800/30 px-2 py-0.5 rounded-full">
+              Enterprise v2.4
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom Banner Content */}
+        <div className="relative z-10 space-y-6 max-w-md">
+          <div className="space-y-3">
+            <h2 className="text-3xl font-extrabold tracking-tight leading-tight">
+              Empowering High-Performance Teams.
+            </h2>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              HRFlow streamlines global recruitment, predictive screening, and candidate lifecycles under a unified, AI-driven dashboard.
+            </p>
+          </div>
+          
+          <div className="bg-slate-900/60 border border-slate-800/40 backdrop-blur-md rounded-2xl p-5 shadow-2xl">
+            <p className="text-slate-200 text-sm italic leading-relaxed">
+              "HRFlow transformed our hiring cycle. What used to take four weeks now takes four days, with much higher candidate quality."
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-teal-400 text-xs">
+                MC
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white">Marcus Vance</h4>
+                <p className="text-[10px] text-slate-400">Head of Talent Acquisition, SynthGlobal</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Footer */}
+        <div className="relative z-10 text-xs text-slate-500">
+          © 2026 HRFlow Inc. All rights reserved.
+        </div>
+      </div>
+
+      {/* Right Login Form Section */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 sm:p-12 md:p-20 bg-slate-50">
+        
+        {/* Mobile Header Branding */}
+        <div className="lg:hidden flex items-center gap-2.5 mb-8">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-teal-400 to-blue-600 flex items-center justify-center shadow-lg">
+            <ShieldCheck className="h-5 w-5 text-slate-950 stroke-[2.5]" />
+          </div>
+          <h1 className="font-extrabold text-xl tracking-tight text-slate-900">
+            HRFlow
+          </h1>
+        </div>
+
+        <div className="w-full max-w-[420px] space-y-6">
+          
+          {/* Main Card */}
+          <div className="bg-white border border-slate-100 rounded-3xl shadow-xl shadow-slate-200/50 p-8 sm:p-10 relative overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            
+            {/* Soft decorative accent */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600"></div>
+
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                Welcome Back
+              </h2>
+              <p className="text-slate-400 text-xs mt-1.5 font-medium">
+                Enter your credentials to access the secure portal
+              </p>
+            </div>
+
+            {error && (
+              <div className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 text-xs font-semibold flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse"></span>
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleLoginSubmit} className="space-y-5">
+              
+              {/* Email Field */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider" htmlFor="email">
+                  Email Address
+                </label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal-500 transition-colors">
+                    <Mail className="h-5 w-5 stroke-[2]" />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="name@company.com"
+                    autoComplete="email"
+                    className="block w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10 focus:outline-none transition-all duration-200"
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider" htmlFor="password">
+                    Password
+                  </label>
+                  <Link
+                    to="/auth/forgot-password"
+                    className="text-xs font-semibold text-teal-600 hover:text-teal-700 transition-colors focus:outline-none focus:underline"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal-500 transition-colors">
+                    <Lock className="h-5 w-5 stroke-[2]" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                    className="block w-full pl-12 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10 focus:outline-none transition-all duration-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 stroke-[2]" />
+                    ) : (
+                      <Eye className="h-5 w-5 stroke-[2]" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember Me */}
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-5 w-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500 focus:ring-offset-0 cursor-pointer"
+                />
+                <label htmlFor="remember-me" className="ml-3 text-xs font-semibold text-slate-600 cursor-pointer select-none">
+                  Keep me logged in
+                </label>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full relative flex items-center justify-center py-3 px-4 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-teal-500/15 hover:opacity-95 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-75 disabled:pointer-events-none transition-all duration-150"
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Authenticating...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1.5">
+                    <span>Log In to System</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                )}
+              </button>
+
+            </form>
+
+            <div className="mt-8 relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-100"></div>
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-white px-4 text-slate-400 font-semibold uppercase tracking-wider">
+                  New to HRFlow?
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <Link
+                to="/auth/register"
+                className="w-full flex justify-center items-center py-3 px-4 border border-slate-200 bg-white rounded-xl text-slate-700 font-semibold text-sm hover:bg-slate-50 active:bg-slate-100 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-100"
+              >
+                Create Candidate Account
+              </Link>
+            </div>
+
+          </div>
+          
+          <p className="lg:hidden text-center text-[10px] text-slate-400 font-medium">
+            © 2026 HRFlow Inc. All rights reserved.
+          </p>
+
+        </div>
+      </div>
+      
     </div>
   );
 };
