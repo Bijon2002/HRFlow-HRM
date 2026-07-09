@@ -198,7 +198,7 @@ const Home = () => {
 </div>
 <div className="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-stack_md">
 <p className="font-body-md text-body-md text-on-surface-variant text-sm">
-                    © 2024-2026 HRFlow Inc. All rights reserved.
+                    © 2026 HRFlow Inc. All rights reserved.
                 </p>
 <div className="flex items-center gap-4">
 {/**/}

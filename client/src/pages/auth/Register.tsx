@@ -151,7 +151,7 @@ const Register = () => {
 
         {/* Bottom Footer */}
         <div className="relative z-10 text-xs text-slate-500">
-          © 2024-2026 HRFlow Inc. All rights reserved.
+          © 2026 HRFlow Inc. All rights reserved.
         </div>
       </div>
 
@@ -421,7 +421,7 @@ const Register = () => {
           </div>
           
           <p className="lg:hidden text-center text-[10px] text-slate-400 font-medium">
-            © 2024-2026 HRFlow Inc. All rights reserved.
+            © 2026 HRFlow Inc. All rights reserved.
           </p>
 
         </div>
