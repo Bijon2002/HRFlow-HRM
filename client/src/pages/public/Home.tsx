@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const Home = () => {
   return (
@@ -15,8 +17,8 @@ const Home = () => {
 <a className="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Pricing</a>
 </nav>
 <div className="flex items-center gap-stack_md">
-<button className="text-primary hover:bg-surface-container-low px-4 py-2 rounded-DEFAULT transition-colors font-label-md text-label-md">Login</button>
-<button className="bg-primary-container text-on-primary px-4 py-2 rounded-DEFAULT hover:opacity-90 transition-opacity font-label-md text-label-md shadow-sm">Apply for Jobs</button>
+<Link to="/auth/login" className="text-primary hover:bg-surface-container-low px-4 py-2 rounded-lg transition-colors font-label-md text-label-md flex items-center justify-center">Login</Link>
+<Link to="/auth/register" className="bg-primary-container text-on-primary px-4 py-2 rounded-lg hover:opacity-90 transition-opacity font-label-md text-label-md shadow-sm flex items-center justify-center">Apply for Jobs</Link>
 </div>
 </header>
 <main className="flex-grow pt-header_height">
@@ -35,13 +37,13 @@ const Home = () => {
                         Streamline recruitment, employee management, and organizational analytics with HRFlow's secure, intuitive platform designed for modern enterprises.
                     </p>
 <div className="flex flex-wrap items-center gap-stack_md pt-stack_sm">
-<button className="bg-primary-container text-on-primary px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-label-md text-label-md shadow-sm flex items-center gap-2">
+<Link to="/auth/login" className="bg-primary-container text-on-primary px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-label-md text-label-md shadow-sm flex items-center gap-2">
                             Login to Dashboard
-                            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-</button>
-<button className="border border-outline text-primary px-6 py-3 rounded-lg hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+                            <ArrowRight className="h-4.5 w-4.5" />
+</Link>
+<Link to="/careers" className="border border-outline text-primary px-6 py-3 rounded-lg hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center justify-center">
                             View Open Positions
-                        </button>
+                        </Link>
 </div>
 </div>
 <div className="hidden md:block relative h-[500px] w-full rounded-xl overflow-hidden shadow-sm border border-outline-variant bg-surface">
@@ -100,9 +102,9 @@ const Home = () => {
 <h2 className="font-headline-md text-headline-md text-primary">Open Positions</h2>
 <p className="font-body-md text-body-md text-on-surface-variant">Join our growing team or view opportunities across our enterprise network.</p>
 </div>
-<button className="text-primary hover:text-primary-container font-label-md text-label-md flex items-center gap-1 transition-colors">
-                        View all jobs <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</button>
+<Link to="/careers" className="text-primary hover:text-primary-container font-label-md text-label-md flex items-center gap-1.5 transition-colors">
+                        View all jobs <ArrowRight className="h-4 w-4" />
+</Link>
 </div>
 <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
 {/**/}
@@ -117,9 +119,9 @@ const Home = () => {
 <h3 className="font-headline-sm text-headline-sm text-on-surface mt-2">Senior Frontend Developer</h3>
 <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2">Lead the development of our core HR management interface using React and Tailwind.</p>
 </div>
-<button className="mt-6 w-full border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors py-2 rounded-DEFAULT font-label-md text-label-md">
+<Link to="/auth/register" className="mt-6 w-full border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors py-2 rounded-lg font-label-md text-label-md flex items-center justify-center">
                             Apply Now
-                        </button>
+                        </Link>
 </div>
 {/**/}
 <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[220px]">
@@ -133,9 +135,9 @@ const Home = () => {
 <h3 className="font-headline-sm text-headline-sm text-on-surface mt-2">Product Manager, Analytics</h3>
 <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2">Drive the roadmap for our AI-powered insights module and reporting tools.</p>
 </div>
-<button className="mt-6 w-full border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors py-2 rounded-DEFAULT font-label-md text-label-md">
+<Link to="/auth/register" className="mt-6 w-full border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors py-2 rounded-lg font-label-md text-label-md flex items-center justify-center">
                             Apply Now
-                        </button>
+                        </Link>
 </div>
 {/**/}
 <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[220px]">
@@ -149,9 +151,9 @@ const Home = () => {
 <h3 className="font-headline-sm text-headline-sm text-on-surface mt-2">Enterprise Account Executive</h3>
 <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2">Manage relationships with top-tier clients and drive adoption of HRFlow.</p>
 </div>
-<button className="mt-6 w-full border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors py-2 rounded-DEFAULT font-label-md text-label-md">
+<Link to="/auth/register" className="mt-6 w-full border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors py-2 rounded-lg font-label-md text-label-md flex items-center justify-center">
                             Apply Now
-                        </button>
+                        </Link>
 </div>
 </div>
 </div>
@@ -175,9 +177,9 @@ const Home = () => {
 </div>
 <div className="flex flex-col gap-stack_sm">
 <h4 className="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider mb-2">Company</h4>
-<a className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a>
-<a className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Careers</a>
-<a className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+<Link className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" to="/about">About Us</Link>
+<Link className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" to="/careers">Careers</Link>
+<Link className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" to="/contact">Contact</Link>
 </div>
 <div className="flex flex-col gap-stack_sm">
 <h4 className="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider mb-2">Legal</h4>
