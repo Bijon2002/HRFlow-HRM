@@ -2,90 +2,8 @@ import React from 'react';
 
 const HRDashboard = () => {
   return (
-    <div className="w-full h-full">
-      
-{/**/}
-<aside className="fixed left-0 top-0 h-full w-[240px] bg-primary dark:bg-primary-container border-r border-outline-variant dark:border-outline shadow-sm z-50 flex flex-col p-4 gap-base hidden md:flex">
-<div className="flex items-center gap-3 mb-8 px-2">
-<div className="w-8 h-8 rounded bg-primary-container flex items-center justify-center shrink-0">
-<span className="material-symbols-outlined text-on-primary">corporate_fare</span>
-</div>
-<div>
-<h1 className="font-headline-md text-headline-md font-bold text-on-primary dark:text-on-primary-container leading-none">HRFlow</h1>
-<p className="font-label-md text-label-md text-on-primary-container mt-1">Management Suite</p>
-</div>
-</div>
-<button className="w-full bg-secondary hover:bg-secondary-container text-on-secondary hover:text-on-secondary-container transition-colors duration-200 py-2.5 rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 mb-4">
-<span className="material-symbols-outlined text-[18px]">add</span>
-            Post New Job
-        </button>
-<nav className="flex-1 flex flex-col gap-2">
-{/**/}
-<a className="flex items-center gap-3 px-4 py-3 bg-secondary dark:bg-secondary-container text-on-secondary dark:text-on-secondary-container rounded-lg opacity-90 transition-all font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">dashboard</span>
-                Dashboard
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant dark:text-on-primary-container hover:bg-primary-container dark:hover:bg-primary rounded-lg transition-colors duration-200 font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">group</span>
-                Candidates
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant dark:text-on-primary-container hover:bg-primary-container dark:hover:bg-primary rounded-lg transition-colors duration-200 font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">event_available</span>
-                Interviews
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant dark:text-on-primary-container hover:bg-primary-container dark:hover:bg-primary rounded-lg transition-colors duration-200 font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">badge</span>
-                Employees
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant dark:text-on-primary-container hover:bg-primary-container dark:hover:bg-primary rounded-lg transition-colors duration-200 font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">analytics</span>
-                Reports
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant dark:text-on-primary-container hover:bg-primary-container dark:hover:bg-primary rounded-lg transition-colors duration-200 font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">settings</span>
-                Settings
-            </a>
-</nav>
-<div className="mt-auto flex flex-col gap-2 pt-4 border-t border-primary-container">
-<a className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant dark:text-on-primary-container hover:bg-primary-container dark:hover:bg-primary rounded-lg transition-colors duration-200 font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">help</span>
-                Help Center
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant dark:text-on-primary-container hover:bg-primary-container dark:hover:bg-primary rounded-lg transition-colors duration-200 font-label-md text-label-md" href="#">
-<span className="material-symbols-outlined text-[20px]">logout</span>
-                Logout
-            </a>
-</div>
-</aside>
-{/**/}
-<div className="flex-1 flex flex-col md:ml-[240px] min-w-0">
-{/**/}
-<header className="sticky top-0 right-0 h-header_height bg-surface dark:bg-surface-container-high border-b border-outline-variant dark:border-outline z-40 flex justify-between items-center px-margin_desktop md:px-margin_desktop px-margin_mobile">
-{/**/}
-<div className="md:hidden flex items-center">
-<h1 className="font-headline-sm text-headline-sm font-black text-primary dark:text-primary-fixed">HRFlow</h1>
-</div>
-{/**/}
-<div className="hidden md:flex relative w-96 group focus-within:ring-2 focus-within:ring-primary rounded-lg">
-<span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input className="w-full bg-surface-container-low dark:bg-surface-dim border-none rounded-lg pl-10 pr-4 py-2 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:ring-0 outline-none hover:bg-surface-container-high transition-all" placeholder="Search candidates, jobs, or employees..." type="text"/>
-</div>
-{/**/}
-<div className="flex items-center gap-4">
-<button className="text-on-surface-variant dark:text-on-surface hover:text-primary hover:bg-surface-container-low dark:hover:bg-surface-dim transition-all p-2 rounded-full">
-<span className="material-symbols-outlined">notifications</span>
-</button>
-<button className="text-on-surface-variant dark:text-on-surface hover:text-primary hover:bg-surface-container-low dark:hover:bg-surface-dim transition-all p-2 rounded-full hidden md:block">
-<span className="material-symbols-outlined">settings</span>
-</button>
-<div className="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2 shrink-0 cursor-pointer">
-<img alt="User Profile" className="w-full h-full object-cover" data-alt="A professional headshot of a young HR manager with glasses, smiling warmly against a clean corporate office background with modern light-mode aesthetics. Bright, high-key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLjPrfKttTtmSzrza0NseMQvRBOzMDPiBqj7FAZH8iX7ZIwXDX8sNBpJfeLUNa3QZg-DYDF47Y9y4BnC57cqHSab4MxfVbOIEzoovEoeHXqEmOGs1Oq9Nz5d4U7T48hGTSy1YpMffv-ru4EkisvyctEwCziA1_3FBsLEV-wLTZMfvL5FLo4K-t3uscP-OFnDj_s9tIJTgNeNjjxw_ho2FgXCoWHQruTwxVAGnqjj_SitbaX_MLjfAipw"/>
-</div>
-</div>
-</header>
-{/**/}
-<main className="flex-1 p-margin_mobile md:p-margin_desktop overflow-x-hidden">
-<div className="max-w-7xl mx-auto space-y-stack_lg">
+    <div className="w-full h-full p-6">
+      <div className="max-w-7xl mx-auto space-y-stack_lg">
 {/**/}
 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div>
@@ -303,10 +221,7 @@ const HRDashboard = () => {
 </div>
 </div>
 </div>
-</div>
-</main>
-</div>
-
+      </div>
     </div>
   );
 };
