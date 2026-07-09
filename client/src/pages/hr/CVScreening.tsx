@@ -1,5 +1,6 @@
 import React from 'react';
 import { Brain, Star, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const candidates = [
   { name: 'Priya Sharma', role: 'Full Stack Engineer', match: 98, skills: ['React', 'Node.js', 'TypeScript'], yoe: 6 },
@@ -9,7 +10,9 @@ const candidates = [
   { name: 'David Kim', role: 'Backend Engineer', match: 83, skills: ['Java', 'Spring', 'Microservices'], yoe: 7 },
 ];
 
-const CVScreening = () => (
+const CVScreening = () => {
+  const navigate = useNavigate();
+  return (
   <div className="p-6 space-y-6">
     <div className="flex items-center gap-3">
       <div className="w-10 h-10 bg-secondary-fixed rounded-xl flex items-center justify-center">
@@ -52,7 +55,10 @@ const CVScreening = () => (
               <div className={`text-2xl font-black ${c.match >= 95 ? 'text-error' : c.match >= 90 ? 'text-secondary' : 'text-on-surface'}`}>{c.match}%</div>
               <div className="font-label-sm text-label-sm text-on-surface-variant">AI Match</div>
             </div>
-            <button className="flex items-center gap-1 border border-secondary text-secondary px-3 py-2 rounded-lg font-label-md text-label-md hover:bg-secondary-fixed transition-colors">
+            <button 
+              onClick={() => navigate('/hr/conduct-interview')}
+              className="flex items-center gap-1 border border-secondary text-secondary px-3 py-2 rounded-lg font-label-md text-label-md hover:bg-secondary-fixed transition-colors"
+            >
               Review <ChevronRight size={14} />
             </button>
           </div>
@@ -60,5 +66,6 @@ const CVScreening = () => (
       ))}
     </div>
   </div>
-);
+  );
+};
 export default CVScreening;

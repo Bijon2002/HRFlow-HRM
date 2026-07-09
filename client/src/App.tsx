@@ -64,21 +64,15 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Standalone Original Premium Pages */}
-        <Route path="/" element={<Home />} />
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/register" element={<Register />} />
-
-        {/* Public Routes */}
+        {/* Public Routes wrapped with Navbar & Footer */}
         <Route path="/" element={<PublicLayout />}>
+          <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="careers" element={<Careers />} />
           <Route path="contact" element={<Contact />} />
-        </Route>
-
-        {/* Auth Routes */}
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="auth/login" element={<Login />} />
+          <Route path="auth/register" element={<Register />} />
+          <Route path="auth/forgot-password" element={<ForgotPassword />} />
         </Route>
 
         {/* Candidate Routes */}
