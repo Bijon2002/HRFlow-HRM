@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import hrFlowLogo from '../../assets/HR-Flow.png';
 
 const PublicLayout = () => {
   const loc = useLocation();
-  const navLink = (to: string, label: string) => (
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navLink = (to: string, label: string, onClick?: () => void) => (
     <Link
       key={to}
       to={to}
+      onClick={onClick}
       className={`font-label-md text-label-md transition-colors ${loc.pathname === to ? 'text-secondary font-semibold' : 'text-on-surface-variant hover:text-primary'}`}
     >
       {label}
@@ -19,27 +22,64 @@ const PublicLayout = () => {
       {/* Top Navbar */}
       <header className="sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant shadow-sm">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
             <div className="bg-white p-1 rounded-md shadow-sm border border-slate-100">
               <img src={hrFlowLogo} alt="HRFlow Logo" className="h-7 w-auto object-contain" />
             </div>
             <span className="font-headline-sm text-headline-sm text-primary font-bold">HRFlow</span>
           </Link>
+          
           <nav className="hidden md:flex items-center gap-8">
             {navLink('/', 'Home')}
             {navLink('/about', 'About')}
             {navLink('/careers', 'Careers')}
             {navLink('/contact', 'Contact')}
           </nav>
+          
           <div className="flex items-center gap-3">
-            <Link to="/auth/login" className="font-label-md text-label-md text-primary border border-primary rounded-lg px-4 py-2 hover:bg-primary hover:text-on-primary transition-colors">
+            <Link to="/auth/login" className="hidden sm:inline-flex font-label-md text-label-md text-primary border border-primary rounded-lg px-4 py-2 hover:bg-primary hover:text-on-primary transition-colors">
               Login
             </Link>
-            <Link to="/auth/register" className="font-label-md text-label-md bg-primary text-on-primary rounded-lg px-4 py-2 hover:bg-primary-container transition-colors">
+            <Link to="/auth/register" className="hidden sm:inline-flex font-label-md text-label-md bg-primary text-on-primary rounded-lg px-4 py-2 hover:bg-primary-container transition-colors">
               Get Started
             </Link>
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-on-surface-variant hover:text-primary focus:outline-none flex items-center justify-center border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+              aria-label="Toggle Public Menu"
+            >
+              <span className="material-symbols-outlined text-[22px]">
+                {mobileMenuOpen ? 'close' : 'menu'}
+              </span>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-outline-variant bg-surface-container-lowest px-6 py-4 flex flex-col gap-4 shadow-inner">
+            {navLink('/', 'Home', () => setMobileMenuOpen(false))}
+            {navLink('/about', 'About', () => setMobileMenuOpen(false))}
+            {navLink('/careers', 'Careers', () => setMobileMenuOpen(false))}
+            {navLink('/contact', 'Contact', () => setMobileMenuOpen(false))}
+            <div className="flex flex-col gap-2 pt-4 border-t border-outline-variant">
+              <Link 
+                to="/auth/login" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="font-label-md text-label-md text-primary border border-primary rounded-lg px-4 py-2 hover:bg-primary hover:text-on-primary transition-colors text-center block"
+              >
+                Login
+              </Link>
+              <Link 
+                to="/auth/register" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="font-label-md text-label-md bg-primary text-on-primary rounded-lg px-4 py-2 hover:bg-primary-container transition-colors text-center block"
+              >
+                Get Started
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       <main className="flex-1">
@@ -80,4 +120,5 @@ const PublicLayout = () => {
     </div>
   );
 };
+
 export default PublicLayout;

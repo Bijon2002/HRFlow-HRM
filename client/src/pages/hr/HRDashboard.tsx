@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const HRDashboard = () => {
   return (
@@ -11,14 +12,14 @@ const HRDashboard = () => {
 <p className="font-body-lg text-body-lg text-on-surface-variant mt-1">Welcome back, Sarah. Here's what's happening today.</p>
 </div>
 <div className="flex flex-wrap gap-3">
-<button className="bg-primary-container text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-primary transition-colors">
+<Link to="/hr/vacancies" className="bg-primary-container text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-primary transition-colors no-underline">
 <span className="material-symbols-outlined text-[18px]">add_box</span>
                             Post New Job
-                        </button>
-<button className="border border-secondary text-secondary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-surface-container-low transition-colors">
+                        </Link>
+<Link to="/hr/interviews" className="border border-secondary text-secondary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-surface-container-low transition-colors no-underline">
 <span className="material-symbols-outlined text-[18px]">calendar_add_on</span>
                             Schedule Interview
-                        </button>
+                        </Link>
 </div>
 </div>
 {/**/}
@@ -68,7 +69,7 @@ const HRDashboard = () => {
 <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
 <div className="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
 <h3 className="font-headline-sm text-headline-sm text-primary">Interviews Today</h3>
-<button className="font-label-md text-label-md text-secondary hover:underline">View Calendar</button>
+<Link to="/shared/calendar" className="font-label-md text-label-md text-secondary hover:underline no-underline">View Calendar</Link>
 </div>
 <div className="divide-y divide-surface-variant">
 {/**/}
@@ -125,7 +126,7 @@ const HRDashboard = () => {
 <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
 <div className="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
 <h3 className="font-headline-sm text-headline-sm text-primary">Recent Applications</h3>
-<button className="font-label-md text-label-md text-secondary hover:underline">View All</button>
+<Link to="/hr/applicants" className="font-label-md text-label-md text-secondary hover:underline no-underline">View All</Link>
 </div>
 <div className="overflow-x-auto">
 <table className="w-full text-left border-collapse">
@@ -190,7 +191,7 @@ const HRDashboard = () => {
 <span className="text-[11px] bg-primary-fixed text-primary px-2 py-0.5 rounded border border-primary-fixed-dim">5 YOE Req</span>
 </div>
 </div>
-<button className="w-full mt-4 border border-secondary text-secondary py-1.5 rounded text-sm font-medium hover:bg-secondary-fixed transition-colors">Review Profile</button>
+<Link to="/hr/conduct-interview" className="w-full mt-4 border border-secondary text-secondary py-1.5 rounded text-sm font-medium hover:bg-secondary-fixed transition-colors flex items-center justify-center no-underline">Review Profile</Link>
 </div>
 {/**/}
 <div className="bg-surface border border-outline-variant rounded-lg p-4 relative group cursor-pointer hover:border-primary transition-colors">
@@ -212,11 +213,11 @@ const HRDashboard = () => {
 <span className="text-[11px] bg-surface-container px-2 py-0.5 rounded text-on-surface-variant border border-outline-variant">Roadmapping</span>
 </div>
 </div>
-<button className="w-full mt-4 border border-secondary text-secondary py-1.5 rounded text-sm font-medium hover:bg-secondary-fixed transition-colors">Review Profile</button>
+<Link to="/hr/conduct-interview" className="w-full mt-4 border border-secondary text-secondary py-1.5 rounded text-sm font-medium hover:bg-secondary-fixed transition-colors flex items-center justify-center no-underline">Review Profile</Link>
 </div>
 </div>
 <div className="p-3 border-t border-outline-variant bg-surface text-center">
-<a className="font-label-md text-label-md text-secondary hover:underline" href="#">View All Matches</a>
+<Link className="font-label-md text-label-md text-secondary hover:underline no-underline" to="/hr/cv-screening">View All Matches</Link>
 </div>
 </div>
 </div>
