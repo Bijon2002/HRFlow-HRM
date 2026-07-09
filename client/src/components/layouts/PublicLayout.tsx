@@ -74,7 +74,7 @@ const PublicLayout = () => {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-primary-container text-center">
-          <p className="font-body-md text-body-md text-primary-fixed-dim">© 2024-2026 HRFlow Inc. All rights reserved.</p>
+          <p className="font-body-md text-body-md text-primary-fixed-dim">© 2026 HRFlow Inc. All rights reserved.</p>
         </div>
       </footer>
     </div>
