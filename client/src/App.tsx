@@ -47,6 +47,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import UserManagement from './pages/admin/UserManagement';
 import RoleManagement from './pages/admin/RoleManagement';
 import SystemAnalytics from './pages/admin/SystemAnalytics';
+import SystemConfiguration from './pages/admin/SystemConfiguration';
+import SecurityPermissions from './pages/admin/SecurityPermissions';
 
 // Shared Pages
 import Notifications from './pages/shared/Notifications';
@@ -120,6 +122,8 @@ const App = () => {
           <Route path="users" element={<UserManagement />} />
           <Route path="roles" element={<RoleManagement />} />
           <Route path="analytics" element={<SystemAnalytics />} />
+          <Route path="configuration" element={<SystemConfiguration />} />
+          <Route path="security" element={<SecurityPermissions />} />
         </Route>
 
         {/* Shared Routes within Dashboard Layout */}

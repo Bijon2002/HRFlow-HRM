@@ -75,8 +75,8 @@ const DashboardLayout = () => {
             <img src={hrFlowLogo} alt="HRFlow Logo" className="h-8 w-auto object-contain shrink-0" />
           </div>
           <div>
-            <h1 className="font-headline-md text-headline-md font-bold text-on-primary dark:text-on-primary-container leading-none">HRFlow</h1>
-            <p className="font-label-md text-label-md text-on-primary-container mt-1">Management Suite</p>
+            <h1 className="font-headline-md text-headline-md font-bold text-white leading-none">HRFlow</h1>
+            <p className="text-[10px] text-teal-300 font-semibold tracking-wider uppercase mt-1">{roleLabel}</p>
           </div>
         </Link>
         
@@ -107,12 +107,12 @@ const DashboardLayout = () => {
           })}
         </nav>
         
-        <div className="mt-auto flex flex-col gap-2 pt-4 border-t border-primary-container">
-          <Link className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-label-md text-label-md ${loc.pathname === '/shared/notifications' ? 'bg-secondary text-on-secondary' : 'text-on-primary-fixed-variant hover:bg-primary-container'}`} to="/shared/notifications">
-            <span className="material-symbols-outlined text-[20px]">help</span>
-            Help Center
+        <div className="mt-auto flex flex-col gap-1 border-t border-white/10 pt-4">
+          <Link className="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/10 hover:text-white rounded-xl transition-all font-label-md text-label-md no-underline" to="/shared/profile">
+            <span className="material-symbols-outlined text-[20px]">settings</span>
+            My Profile
           </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant hover:bg-primary-container rounded-lg transition-colors duration-200 font-label-md text-label-md" to="/auth/login">
+          <Link className="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/10 hover:text-white rounded-xl transition-all font-label-md text-label-md no-underline" to="/auth/login">
             <span className="material-symbols-outlined text-[20px]">logout</span>
             Logout
           </Link>
@@ -121,16 +121,17 @@ const DashboardLayout = () => {
 
       <div className="flex-1 md:ml-[240px] flex flex-col min-h-screen">
         {/* Top Header */}
-        <header className="h-[72px] bg-surface border-b border-outline-variant flex items-center justify-between px-6 sticky top-0 z-40 shadow-sm">
+        <header className="h-[72px] bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-40 shadow-sm">
           <div className="flex items-center gap-4">
             <h2 className="font-headline-sm text-headline-sm text-on-surface font-semibold">{getWorkspaceTitle()}</h2>
           </div>
-          <div className="flex items-center gap-4">
-            <button className="w-10 h-10 rounded-full hover:bg-surface-container-high flex items-center justify-center transition-colors">
-              <span className="material-symbols-outlined text-on-surface-variant">search</span>
+          <div className="flex items-center gap-3">
+            <button className="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center transition-all text-slate-500 border border-slate-200">
+              <span className="material-symbols-outlined text-[20px]">search</span>
             </button>
-            <button className="w-10 h-10 rounded-full hover:bg-surface-container-high flex items-center justify-center transition-colors">
-              <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
+            <button className="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center transition-all text-slate-500 border border-slate-200 relative">
+              <span className="material-symbols-outlined text-[20px]">notifications</span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
             </button>
             <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center ml-2 cursor-pointer border border-outline-variant">
               <span className="font-label-lg text-label-lg text-on-secondary-container font-bold">SH</span>
@@ -138,7 +139,7 @@ const DashboardLayout = () => {
           </div>
         </header>
 
-        <main className="flex-1 p-6 overflow-y-auto bg-surface-container-low">
+        <main className="flex-1 p-6 overflow-y-auto bg-slate-50/50">
           <Outlet />
         </main>
       </div>
