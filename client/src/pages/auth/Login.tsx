@@ -27,8 +27,15 @@ const Login = () => {
     // Simulate authentication API call
     setTimeout(() => {
       setIsLoading(false);
-      // Determine dashboard route based on simple rules or defaults
-      if (email.includes('admin')) {
+      
+      // Strict credentials check for requested admin
+      if (email === 'admin@gmail.com') {
+        if (password !== 'admin123') {
+          setError('Invalid credentials. Admin password is "admin123"');
+          return;
+        }
+        navigate('/admin/dashboard');
+      } else if (email.includes('admin')) {
         navigate('/admin/dashboard');
       } else if (email.includes('hr')) {
         navigate('/hr/dashboard');

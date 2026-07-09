@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Camera, Save } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Camera, Save, ArrowLeft } from 'lucide-react';
 
 const ProfileSettings = () => {
+  const navigate = useNavigate();
   const [tab, setTab] = useState('profile');
   const tabs = [
     { key: 'profile', label: 'Profile' },
@@ -10,6 +12,13 @@ const ProfileSettings = () => {
   ];
   return (
     <div className="p-6 max-w-3xl space-y-6">
+      <button 
+        onClick={() => navigate(-1)} 
+        className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-xs font-bold transition-all border border-slate-200 hover:bg-slate-100 px-3.5 py-2 rounded-xl cursor-pointer"
+      >
+        <ArrowLeft size={14} />
+        Back to Dashboard
+      </button>
       <div>
         <h1 className="font-headline-md text-headline-md text-primary font-bold">Profile Settings</h1>
         <p className="font-body-md text-body-md text-on-surface-variant mt-1">Manage your account information</p>
