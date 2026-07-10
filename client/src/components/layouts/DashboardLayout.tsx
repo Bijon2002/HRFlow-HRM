@@ -54,6 +54,7 @@ const DashboardLayout = () => {
     } else if (role === 'employee') {
       return [
         { label: 'Dashboard', path: '/employee/dashboard', icon: 'dashboard' },
+        { label: 'My Projects', path: '/employee/projects', icon: 'folder' },
         { label: 'My Tasks', path: '/employee/tasks', icon: 'assignment' },
         { label: 'My Attendance', path: '/employee/attendance', icon: 'schedule' },
         { label: 'My Performance', path: '/employee/performance', icon: 'trending_up' },
@@ -88,6 +89,22 @@ const DashboardLayout = () => {
     if (role === 'employee') return 'Employee Workspace';
     if (role === 'admin') return 'Administrator Console';
     return 'HRFlow Management';
+  };
+
+  const getProfileInitials = () => {
+    try {
+      const role = getRole();
+      const profileStr = localStorage.getItem(`hrflow_profile_${role}`);
+      if (profileStr) {
+        const profile = JSON.parse(profileStr);
+        if (profile.firstName && profile.lastName) {
+          return (profile.firstName[0] + profile.lastName[0]).toUpperCase();
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return 'SH';
   };
 
   const sidebarLinks = getSidebarLinks();
@@ -180,7 +197,7 @@ const DashboardLayout = () => {
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
             </Link>
             <Link to="/shared/profile" className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center ml-2 cursor-pointer border border-outline-variant hover:opacity-90 transition-opacity">
-              <span className="font-label-lg text-label-lg text-on-secondary-container font-bold">SH</span>
+              <span className="font-label-lg text-label-lg text-on-secondary-container font-bold">{getProfileInitials()}</span>
             </Link>
           </div>
         </header>
