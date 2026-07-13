@@ -88,9 +88,10 @@ async def analyze_cv(file: UploadFile = File(...)):
         if not cv_text.strip():
             raise HTTPException(status_code=400, detail="Could not extract any text from the PDF. It might be a scanned image.")
 
-        # Call OpenRouter API using Llama 3.3 70B Instruct (Free)
+        # Call OpenRouter API using GPT-4o
         response = await client.chat.completions.create(
-            model="meta-llama/llama-3.3-70b-instruct:free",
+            model="openai/gpt-4o",
+            max_tokens=1500,
             messages=[
                 {"role": "system", "content": "You are a helpful AI assistant that outputs only valid JSON."},
                 {"role": "user", "content": f"{PROMPT}\n\n{cv_text}"}
