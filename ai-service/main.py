@@ -91,6 +91,7 @@ async def analyze_cv(file: UploadFile = File(...)):
         # Call OpenRouter API using GPT-4o
         response = await client.chat.completions.create(
             model="openai/gpt-4o",
+            max_tokens=1500,
             messages=[
                 {"role": "system", "content": "You are a helpful AI assistant that outputs only valid JSON."},
                 {"role": "user", "content": f"{PROMPT}\n\n{cv_text}"}
