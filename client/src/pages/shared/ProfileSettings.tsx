@@ -10,6 +10,55 @@ const ProfileSettings = () => {
     { key: 'security', label: 'Security' },
     { key: 'notifications', label: 'Notifications' },
   ];
+
+  // Password update states
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [pwdError, setPwdError] = useState('');
+  const [pwdSuccess, setPwdSuccess] = useState('');
+  const [isUpdatingPwd, setIsUpdatingPwd] = useState(false);
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPwdError('');
+    setPwdSuccess('');
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setPwdError('Please fill in all fields');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPwdError('New passwords do not match');
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setPwdError('New password must be at least 8 characters long');
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      setPwdError('New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character');
+      return;
+    }
+
+    setIsUpdatingPwd(true);
+    try {
+      const { api } = await import('../../api');
+      await api.put('/auth/password', { currentPassword, newPassword });
+      setPwdSuccess('Password updated successfully');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (err: any) {
+      setPwdError(err.message || 'Failed to update password');
+    } finally {
+      setIsUpdatingPwd(false);
+    }
+  };
   return (
     <div className="p-6 max-w-3xl space-y-6">
       <button 
@@ -51,13 +100,59 @@ const ProfileSettings = () => {
         </div>
       )}
       {tab === 'security' && (
-        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-6 space-y-4">
+        <form onSubmit={handleUpdatePassword} className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-6 space-y-4">
           <h3 className="font-headline-sm text-headline-sm text-on-surface font-semibold">Change Password</h3>
-          {['Current password', 'New password', 'Confirm new password'].map(l => (
-            <div key={l}><label className="block font-label-md text-label-md text-on-surface-variant mb-1.5">{l}</label><input type="password" className="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2.5 text-sm focus:border-primary focus:outline-none" /></div>
-          ))}
-          <button className="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md hover:bg-secondary transition-colors shadow-sm">Update Password</button>
-        </div>
+          
+          {pwdError && (
+            <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 text-xs font-semibold rounded-lg">
+              {pwdError}
+            </div>
+          )}
+
+          {pwdSuccess && (
+            <div className="p-3 bg-emerald-50 border border-emerald-100 text-emerald-600 text-xs font-semibold rounded-lg">
+              {pwdSuccess}
+            </div>
+          )}
+
+          <div>
+            <label className="block font-label-md text-label-md text-on-surface-variant mb-1.5">Current Password</label>
+            <input 
+              type="password" 
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2.5 text-sm focus:border-primary focus:outline-none" 
+            />
+          </div>
+
+          <div>
+            <label className="block font-label-md text-label-md text-on-surface-variant mb-1.5">New Password</label>
+            <input 
+              type="password" 
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2.5 text-sm focus:border-primary focus:outline-none" 
+            />
+          </div>
+
+          <div>
+            <label className="block font-label-md text-label-md text-on-surface-variant mb-1.5">Confirm New Password</label>
+            <input 
+              type="password" 
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2.5 text-sm focus:border-primary focus:outline-none" 
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={isUpdatingPwd}
+            className="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md hover:bg-secondary transition-colors shadow-sm disabled:opacity-50 cursor-pointer"
+          >
+            {isUpdatingPwd ? 'Updating...' : 'Update Password'}
+          </button>
+        </form>
       )}
       {tab === 'notifications' && (
         <div className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-6 space-y-4">

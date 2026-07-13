@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit, Trash2, Shield, X, Check } from 'lucide-react';
 
 interface User {
+  _id?: string;
   name: string;
   email: string;
   role: string;
@@ -9,12 +10,15 @@ interface User {
   joined: string;
 }
 
-const initialUsers: User[] = [
-  { name: 'Aisha Rahman', email: 'aisha@hrflow.app', role: 'HR Manager', status: 'Active', joined: 'Jan 2024' },
-  { name: 'Tanvir Khan', email: 'tanvir@company.com', role: 'Employee', status: 'Active', joined: 'Mar 2023' },
-  { name: 'Lin Wei', email: 'lin@candidate.com', role: 'Candidate', status: 'Pending', joined: 'Jul 2026' },
-  { name: 'Admin User', email: 'admin@hrflow.app', role: 'Admin', status: 'Active', joined: 'Nov 2022' },
-];
+const mapRoleToDb = (role: string): string => {
+  if (role === 'HR Manager') return 'hr';
+  return role.toLowerCase();
+};
+
+const mapRoleToUi = (role: string): string => {
+  if (role === 'hr') return 'HR Manager';
+  return role.charAt(0).toUpperCase() + role.slice(1);
+};
 
 const roleColor: Record<string, string> = {
   Admin: 'bg-rose-50 text-rose-600 border border-rose-100',
@@ -24,7 +28,8 @@ const roleColor: Record<string, string> = {
 };
 
 const UserManagement = () => {
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRoleFilter, setSelectedRoleFilter] = useState('All Roles');
   
@@ -45,7 +50,32 @@ const UserManagement = () => {
     setTimeout(() => setShowToast(false), 3000);
   };
 
-  const handleAddUser = (e: React.FormEvent) => {
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    try {
+      const { api } = await import('../../api');
+      const data = await api.get('/auth/users');
+      const mapped = data.map((u: any) => ({
+        _id: u._id,
+        name: u.name,
+        email: u.email,
+        role: mapRoleToUi(u.role),
+        status: u.status || 'Active',
+        joined: new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+      }));
+      setUsers(mapped);
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newUserName || !newUserEmail) {
       alert('Please fill out all fields.');
@@ -58,42 +88,56 @@ const UserManagement = () => {
       return;
     }
 
-    const newUser: User = {
-      name: newUserName,
-      email: newUserEmail,
-      role: newUserRole,
-      status: newUserStatus,
-      joined: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
-    };
-
-    setUsers([...users, newUser]);
-    setIsModalOpen(false);
-    triggerToast(`User "${newUserName}" created successfully.`);
-    
-    // Reset fields
-    setNewUserName('');
-    setNewUserEmail('');
-    setNewUserRole('Employee');
-    setNewUserStatus('Active');
-  };
-
-  const handleDeleteUser = (email: string) => {
-    const userToDelete = users.find(u => u.email === email);
-    setUsers(users.filter(u => u.email !== email));
-    if (userToDelete) {
-      triggerToast(`Account for "${userToDelete.name}" deleted.`);
+    try {
+      const { api } = await import('../../api');
+      await api.post('/auth/users', {
+        name: newUserName,
+        email: newUserEmail,
+        password: 'User123!', // secure default password
+        role: mapRoleToDb(newUserRole),
+        status: newUserStatus
+      });
+      
+      triggerToast(`User "${newUserName}" created successfully.`);
+      fetchUsers();
+      
+      // Reset fields
+      setNewUserName('');
+      setNewUserEmail('');
+      setNewUserRole('Employee');
+      setNewUserStatus('Active');
+      setIsModalOpen(false);
+    } catch (err: any) {
+      alert(err.message || 'Failed to create user');
     }
   };
 
-  const handleToggleStatus = (email: string) => {
-    setUsers(users.map(u => {
-      if (u.email === email) {
-        const nextStatus = u.status === 'Active' ? 'Pending' : 'Active';
-        triggerToast(`Status for ${u.name} updated to ${nextStatus}.`);
-        return { ...u, status: nextStatus };
-      }
-      return u;
-    }));
+  const handleDeleteUser = async (user: User) => {
+    if (!window.confirm(`Are you sure you want to delete user "${user.name}"?`)) {
+      return;
+    }
+    try {
+      const { api } = await import('../../api');
+      await api.delete(`/auth/users/${user._id}`);
+      triggerToast(`Account for "${user.name}" deleted.`);
+      fetchUsers();
+    } catch (err: any) {
+      alert(err.message || 'Failed to delete user');
+    }
+  };
+
+  const handleToggleStatus = async (user: User) => {
+    const nextStatus = user.status === 'Active' ? 'Pending' : 'Active';
+    try {
+      const { api } = await import('../../api');
+      await api.put(`/auth/users/${user._id}`, {
+        status: nextStatus
+      });
+      triggerToast(`Status for ${user.name} updated to ${nextStatus}.`);
+      fetchUsers();
+    } catch (err: any) {
+      alert(err.message || 'Failed to update user status');
+    }
   };
 
   // Filtered users list
@@ -189,7 +233,7 @@ const UserManagement = () => {
                     </td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => handleToggleStatus(u.email)}
+                        onClick={() => handleToggleStatus(u)}
                         className={`px-2.5 py-0.5 rounded-full font-bold text-[9px] tracking-wide uppercase border cursor-pointer hover:scale-105 active:scale-95 transition-all ${
                           u.status === 'Active' 
                             ? 'bg-emerald-50 text-emerald-600 border-emerald-200' 
@@ -218,7 +262,7 @@ const UserManagement = () => {
                           <Shield size={14} />
                         </button>
                         <button 
-                          onClick={() => handleDeleteUser(u.email)}
+                          onClick={() => handleDeleteUser(u)}
                           className="p-2 hover:bg-rose-50 hover:text-rose-600 rounded-lg transition-all text-slate-400 border border-slate-100 cursor-pointer" 
                           title="Delete User"
                         >

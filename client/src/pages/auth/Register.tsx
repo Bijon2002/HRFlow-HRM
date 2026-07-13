@@ -61,6 +61,11 @@ const Register = () => {
       return;
     }
 
+    if (strengthScore < 3) {
+      setError('Password is too weak. It must be at least 8 characters long and contain uppercase and lowercase letters, numbers, and special characters.');
+      return;
+    }
+
     if (!agreeTerms) {
       setError('You must agree to the Terms of Service & Privacy Policy');
       return;

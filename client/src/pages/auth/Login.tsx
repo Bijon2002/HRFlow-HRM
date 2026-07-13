@@ -84,7 +84,7 @@ const Login = () => {
                   label: 'Admin', 
                   sub: 'Full Access Console', 
                   email: 'admin@hrflow.app', 
-                  pass: 'admin123',
+                  pass: 'Admin123!',
                   border: 'hover:border-blue-500/40 hover:shadow-blue-500/5',
                   iconColor: 'text-blue-700 bg-blue-50 border-blue-100',
                   badge: 'Admin'
@@ -93,7 +93,7 @@ const Login = () => {
                   label: 'HR Manager', 
                   sub: 'Hiring & Jobs', 
                   email: 'hr@hrflow.app', 
-                  pass: 'hr123',
+                  pass: 'HrManager123!',
                   border: 'hover:border-emerald-500/40 hover:shadow-emerald-500/5',
                   iconColor: 'text-emerald-700 bg-emerald-50 border-emerald-100',
                   badge: 'HR'
@@ -102,7 +102,7 @@ const Login = () => {
                   label: 'Employee', 
                   sub: 'Tasks & Timesheets', 
                   email: 'employee@hrflow.app', 
-                  pass: 'emp123',
+                  pass: 'Employee123!',
                   border: 'hover:border-teal-500/40 hover:shadow-teal-500/5',
                   iconColor: 'text-teal-700 bg-teal-50 border-teal-100',
                   badge: 'Staff'
@@ -111,7 +111,7 @@ const Login = () => {
                   label: 'Candidate', 
                   sub: 'Portal & Quiz', 
                   email: 'candidate@hrflow.app', 
-                  pass: 'cand123',
+                  pass: 'Candidate123!',
                   border: 'hover:border-slate-450/40 hover:shadow-slate-450/5',
                   iconColor: 'text-slate-700 bg-slate-100 border-slate-200',
                   badge: 'Applicant'
