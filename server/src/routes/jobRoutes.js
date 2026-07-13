@@ -5,8 +5,9 @@ const { authorize } = require('../middleware/roleMiddleware');
 
 const router = express.Router();
 
+// All job routes now require authentication
 router.route('/')
-  .get(getInternships)
+  .get(protect, getInternships)
   .post(protect, authorize('hr', 'admin'), createInternship);
 
 router.post('/apply', protect, authorize('candidate'), applyToInternship);
