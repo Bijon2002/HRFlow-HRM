@@ -41,6 +41,7 @@ import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import MyTasks from './pages/employee/MyTasks';
 import MyAttendance from './pages/employee/MyAttendance';
 import MyPerformance from './pages/employee/MyPerformance';
+import MyProjects from './pages/employee/MyProjects';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -118,6 +119,7 @@ const App = () => {
         }>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<EmployeeDashboard />} />
+          <Route path="projects" element={<MyProjects />} />
           <Route path="tasks" element={<MyTasks />} />
           <Route path="attendance" element={<MyAttendance />} />
           <Route path="performance" element={<MyPerformance />} />
