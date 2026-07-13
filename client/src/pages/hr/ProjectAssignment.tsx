@@ -1,14 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutGrid, Users, Award, AlertTriangle, Play, CheckCircle2, ChevronRight, Plus, HelpCircle, UserPlus, X } from 'lucide-react';
-
-const initialProjects = [
-  { id: '1', title: 'HRM Suite 2.0', dept: 'Engineering', members: ['Sarah Hassan', 'Tanvir Khan'], progress: 68, status: 'On Track', tasksCount: 14, overload: false },
-  { id: '2', title: 'AI CV Screening Engine', dept: 'Engineering', members: ['Sarah Hassan', 'Lin Wei'], progress: 45, status: 'At Risk', tasksCount: 9, overload: true },
-  { id: '3', title: 'Q3 Career Fair Portal', dept: 'Marketing', members: ['Rafi Ahmed', 'Nadia Islam'], progress: 90, status: 'On Track', tasksCount: 12, overload: false },
-  { id: '4', title: 'Employee Portal Refactor', dept: 'Design', members: ['Nadia Islam', 'Sarah Hassan'], progress: 12, status: 'Delayed', tasksCount: 8, overload: true }
-];
-
-const allEmployees = ['Sarah Hassan', 'Rafi Ahmed', 'Nadia Islam', 'Tanvir Khan', 'Lin Wei'];
 
 const initialAiRecommendations = [
   { id: '1', employee: 'Sarah Hassan', currentTasks: 4, status: 'Critical Overload', recommendation: 'Transfer "Employee Portal Refactor" mockup task to Nadia Islam (UX Designer).', savedHours: '6.5 hrs/week' },
@@ -16,35 +7,97 @@ const initialAiRecommendations = [
 ];
 
 const ProjectAssignment = () => {
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [allEmployees, setAllEmployees] = useState<any[]>([]);
   const [recs, setRecs] = useState(initialAiRecommendations);
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
   const [showAssignMemberModal, setShowAssignMemberModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Form states
   const [newTitle, setNewTitle] = useState('');
   const [newDept, setNewDept] = useState('Engineering');
-  const [memberToAdd, setMemberToAdd] = useState(allEmployees[0]);
+  const [memberToAdd, setMemberToAdd] = useState('');
 
-  const handleCreateProject = (e: React.FormEvent) => {
+  const fetchProjectsAndStaff = async () => {
+    setIsLoading(true);
+    try {
+      const { api } = await import('../../api');
+      
+      // 1. Fetch staff
+      const usersData = await api.get('/auth/users');
+      const staff = usersData.filter((u: any) => u.role === 'employee' || u.role === 'hr');
+      setAllEmployees(staff);
+      if (staff.length > 0) {
+        setMemberToAdd(staff[0]._id);
+      }
+
+      // 2. Fetch projects
+      const projectsData = await api.get('/projects');
+      
+      // 3. Fetch tasks for each project to calculate members and progress
+      const projectsWithDetails = await Promise.all(projectsData.map(async (p: any) => {
+        try {
+          const tasks = await api.get(`/projects/${p._id}/tasks`);
+          const membersList = Array.from(new Set(tasks.map((t: any) => t.assignedTo?.name).filter(Boolean)));
+          const doneTasks = tasks.filter((t: any) => t.status === 'Done').length;
+          const progressVal = tasks.length > 0 ? Math.round((doneTasks / tasks.length) * 100) : (p.status === 'Completed' ? 100 : 0);
+          
+          return {
+            id: p._id,
+            title: p.name,
+            dept: p.requiredSkills?.[0] || 'Engineering',
+            members: membersList,
+            progress: progressVal,
+            status: p.status === 'Completed' ? 'On Track' : (p.status === 'In Progress' ? 'On Track' : 'Not Started'),
+            tasksCount: tasks.length,
+            overload: tasks.length > 3
+          };
+        } catch (err) {
+          return {
+            id: p._id,
+            title: p.name,
+            dept: p.requiredSkills?.[0] || 'Engineering',
+            members: [],
+            progress: p.status === 'Completed' ? 100 : 0,
+            status: p.status === 'Completed' ? 'On Track' : 'Not Started',
+            tasksCount: 0,
+            overload: false
+          };
+        }
+      }));
+
+      setProjects(projectsWithDetails);
+    } catch (error) {
+      console.error('Error fetching project data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjectsAndStaff();
+  }, []);
+
+  const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
-    
-    const newProj = {
-      id: (projects.length + 1).toString(),
-      title: newTitle,
-      dept: newDept,
-      members: [],
-      progress: 0,
-      status: 'On Track',
-      tasksCount: 0,
-      overload: false
-    };
 
-    setProjects([...projects, newProj]);
-    setNewTitle('');
-    setShowAddProjectModal(false);
+    try {
+      const { api } = await import('../../api');
+      await api.post('/projects', {
+        name: newTitle,
+        client: 'Internal',
+        requiredSkills: [newDept],
+        status: 'Not Started'
+      });
+      setNewTitle('');
+      setShowAddProjectModal(false);
+      fetchProjectsAndStaff();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleOpenAssignModal = (proj: any) => {
@@ -52,49 +105,26 @@ const ProjectAssignment = () => {
     setShowAssignMemberModal(true);
   };
 
-  const handleAssignMember = (e: React.FormEvent) => {
+  const handleAssignMember = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedProject) return;
+    if (!selectedProject || !memberToAdd) return;
 
-    setProjects(prev => prev.map(p => {
-      if (p.id === selectedProject.id) {
-        if (p.members.includes(memberToAdd)) return p;
-        return { ...p, members: [...p.members, memberToAdd] };
-      }
-      return p;
-    }));
-
-    setShowAssignMemberModal(false);
+    try {
+      const { api } = await import('../../api');
+      await api.post('/projects/tasks', {
+        projectId: selectedProject.id,
+        assignedTo: memberToAdd,
+        title: 'Project Assignment Onboarding Task',
+        status: 'In Progress'
+      });
+      setShowAssignMemberModal(false);
+      fetchProjectsAndStaff();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const applyRecommendation = (id: string) => {
-    const rec = recs.find(r => r.id === id);
-    if (!rec) return;
-
-    if (rec.employee === 'Sarah Hassan' && id === '1') {
-      // Transfer Employee Portal Refactor task from Sarah to Nadia
-      setProjects(prev => prev.map(p => {
-        if (p.title === 'Employee Portal Refactor') {
-          const cleanMembers = p.members.filter(m => m !== 'Sarah Hassan');
-          if (!cleanMembers.includes('Nadia Islam')) {
-            cleanMembers.push('Nadia Islam');
-          }
-          return { ...p, members: cleanMembers, overload: false };
-        }
-        return p;
-      }));
-    } else if (rec.employee === 'Tanvir Khan' && id === '2') {
-      // Assign HRM Suite 2.0 task to Tanvir (already member or add)
-      setProjects(prev => prev.map(p => {
-        if (p.title === 'HRM Suite 2.0') {
-          if (!p.members.includes('Tanvir Khan')) {
-            return { ...p, members: [...p.members, 'Tanvir Khan'] };
-          }
-        }
-        return p;
-      }));
-    }
-
     setRecs(prev => prev.filter(r => r.id !== id));
   };
 
@@ -140,74 +170,80 @@ const ProjectAssignment = () => {
         {/* Project Cards (List) */}
         <div className="lg:col-span-2 space-y-4">
           <h2 className="font-headline-sm text-headline-sm text-primary font-bold">Active Project List</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {projects.map(proj => (
-              <div key={proj.id} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-primary hover:shadow-md transition-all flex flex-col justify-between gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase font-bold tracking-wide text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
-                        {proj.dept}
-                      </span>
-                      <h4 className="font-headline-sm text-[16px] text-primary mt-1 font-bold">{proj.title}</h4>
-                    </div>
-                    <span className={`px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold text-[10px] ${
-                      proj.status === 'On Track' ? 'bg-secondary-fixed text-secondary' :
-                      proj.status === 'At Risk' ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant' :
-                      'bg-error-container text-error'
-                    }`}>
-                      {proj.status}
-                    </span>
-                  </div>
-
-                  <div className="pt-2">
-                    <div className="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-1">
-                      <span>Progress</span>
-                      <span>{proj.progress}%</span>
-                    </div>
-                    <div className="h-1.5 bg-surface-container rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          proj.status === 'On Track' ? 'bg-secondary' :
-                          proj.status === 'At Risk' ? 'bg-tertiary-container' : 'bg-error'
-                        }`} 
-                        style={{ width: proj.progress + '%' }} 
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-outline-variant flex items-center justify-between">
-                  <div className="flex -space-x-2">
-                    {proj.members.map((m, idx) => (
-                      <div 
-                        key={m} 
-                        title={m}
-                        className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border border-surface-container-lowest text-white shrink-0 ${
-                          idx === 0 ? 'bg-primary' : 'bg-secondary'
-                        }`}
-                      >
-                        {m.split(' ').map(n => n[0]).join('')}
+          {isLoading ? (
+            <div className="text-center py-12 text-slate-400 font-semibold">Loading projects database...</div>
+          ) : projects.length > 0 ? (
+            <div className="grid md:grid-cols-2 gap-4">
+              {projects.map(proj => (
+                <div key={proj.id} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-primary hover:shadow-md transition-all flex flex-col justify-between gap-4">
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <span className="text-[10px] uppercase font-bold tracking-wide text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+                          {proj.dept}
+                        </span>
+                        <h4 className="font-headline-sm text-[16px] text-primary mt-1 font-bold">{proj.title}</h4>
                       </div>
-                    ))}
-                    {proj.members.length === 0 && (
-                      <span className="text-xs text-on-surface-variant italic">Unassigned</span>
-                    )}
+                      <span className={`px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold text-[10px] ${
+                        proj.status === 'On Track' ? 'bg-secondary-fixed text-secondary' :
+                        proj.status === 'At Risk' ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant' :
+                        'bg-error-container text-error'
+                      }`}>
+                        {proj.status}
+                      </span>
+                    </div>
+
+                    <div className="pt-2">
+                      <div className="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-1">
+                        <span>Progress</span>
+                        <span>{proj.progress}%</span>
+                      </div>
+                      <div className="h-1.5 bg-surface-container rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            proj.status === 'On Track' ? 'bg-secondary' :
+                            proj.status === 'At Risk' ? 'bg-tertiary-container' : 'bg-error'
+                          }`} 
+                          style={{ width: proj.progress + '%' }} 
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex gap-1.5">
-                    <button 
-                      onClick={() => handleOpenAssignModal(proj)}
-                      className="p-1.5 hover:text-primary transition-colors text-on-surface-variant"
-                      title="Assign member"
-                    >
-                      <UserPlus size={16} />
-                    </button>
+                  <div className="pt-3 border-t border-outline-variant flex items-center justify-between">
+                    <div className="flex -space-x-2 overflow-hidden">
+                      {proj.members.map((m: string, idx: number) => (
+                        <div 
+                          key={m} 
+                          title={m}
+                          className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border border-surface-container-lowest text-white shrink-0 ${
+                            idx === 0 ? 'bg-primary' : 'bg-secondary'
+                          }`}
+                        >
+                          {m.split(' ').map(n => n[0]).join('')}
+                        </div>
+                      ))}
+                      {proj.members.length === 0 && (
+                        <span className="text-xs text-on-surface-variant italic">Unassigned</span>
+                      )}
+                    </div>
+
+                    <div className="flex gap-1.5">
+                      <button 
+                        onClick={() => handleOpenAssignModal(proj)}
+                        className="p-1.5 hover:text-primary transition-colors text-on-surface-variant"
+                        title="Assign member"
+                      >
+                        <UserPlus size={16} />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-slate-400 font-semibold">No projects assigned.</div>
+          )}
         </div>
 
         {/* AI Recommendations Panel */}
@@ -331,7 +367,7 @@ const ProjectAssignment = () => {
                   className="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none"
                 >
                   {allEmployees.map(emp => (
-                    <option key={emp} value={emp}>{emp}</option>
+                    <option key={emp._id} value={emp._id}>{emp.name}</option>
                   ))}
                 </select>
               </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Shield, ShieldAlert, Check, X, Plus } from 'lucide-react';
 
 interface SystemRole {
@@ -56,6 +56,7 @@ const initialRoles: SystemRole[] = [
 const RoleManagement = () => {
   const [roles, setRoles] = useState<SystemRole[]>(initialRoles);
   const [selectedRoleIndex, setSelectedRoleIndex] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,6 +66,36 @@ const RoleManagement = () => {
   // Toast notifications
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  const fetchUserCountsPerRole = async () => {
+    setIsLoading(true);
+    try {
+      const { api } = await import('../../api');
+      const users = await api.get('/auth/users');
+      
+      const adminCount = users.filter((u: any) => u.role === 'admin').length;
+      const hrCount = users.filter((u: any) => u.role === 'hr').length;
+      const employeeCount = users.filter((u: any) => u.role === 'employee').length;
+      const candidateCount = users.filter((u: any) => u.role === 'candidate').length;
+
+      setRoles(prevRoles => prevRoles.map(role => {
+        let count = 0;
+        if (role.name === 'Admin') count = adminCount;
+        else if (role.name === 'HR Manager') count = hrCount;
+        else if (role.name === 'Employee') count = employeeCount;
+        else if (role.name === 'Candidate') count = candidateCount;
+        return { ...role, users: count };
+      }));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserCountsPerRole();
+  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
