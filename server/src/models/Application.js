@@ -9,6 +9,16 @@ const ApplicationSchema = new mongoose.Schema({
   resumeUrl: { type: String },
   quizScore: { type: Number },
   interviewSlot: { type: Object },
+  aiAnalysis: {
+    score: { type: Number },
+    skills: [{ type: String }],
+    education: { type: String },
+    experience: { type: String },
+    summary: { type: String },
+    strengths: [{ type: String }],
+    weaknesses: [{ type: String }],
+    analyzedAt: { type: Date }
+  },
   createdAt: { type: Date, default: Date.now }
 });
 

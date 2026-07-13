@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'hrflowsecretkey', { expiresIn: '30d' });
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
 // Password strength validation helper

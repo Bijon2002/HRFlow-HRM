@@ -11,15 +11,19 @@ const {
 } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 const { authorize } = require('../middleware/roleMiddleware');
+const { authLimiter } = require('../middleware/rateLimiter');
 
 const router = express.Router();
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
+// Public routes — rate limited
+router.post('/register', authLimiter, registerUser);
+router.post('/login', authLimiter, loginUser);
+
+// Protected routes
 router.get('/profile', protect, getUserProfile);
 router.put('/password', protect, updatePassword);
 
-// User management routes
+// User management routes (Admin/HR only)
 router.route('/users')
   .get(protect, authorize('hr', 'admin'), getUsers)
   .post(protect, authorize('admin'), adminCreateUser);

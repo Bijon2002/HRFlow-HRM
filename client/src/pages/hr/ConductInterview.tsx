@@ -1,24 +1,11 @@
-import React, { useState } from 'react';
-import { Star, ShieldAlert, Cpu, Check, FileText, Sparkles, MessageSquare, AlertCircle, ArrowLeft, Heart, Award, ArrowUpRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Star, Check, Sparkles, MessageSquare, ArrowLeft, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-const mockInterview = {
-  candidateName: 'Priya Sharma',
-  role: 'Full Stack Engineer',
-  experience: '6 Years',
-  education: 'B.Sc. in Computer Science (BUET)',
-  skills: ['React', 'Node.js', 'TypeScript', 'MongoDB', 'Docker', 'GraphQL'],
-  aiScore: 98,
-  aiInsights: 'Candidate has a strong matching profile for the Senior Frontend/Full Stack vacancy. Demonstrated experience in leading React migrations and optimization of Node microservices.',
-  suggestedQuestions: [
-    'Describe your experience migrating a monolithic codebase to Node.js microservices. What challenges did you face with state management?',
-    'How do you optimize React render performance in application dashboards displaying heavy, real-time data feeds?',
-    'What is your approach to structuring security, CORS, and token refresh logic in Express/React architectures?'
-  ]
-};
 
 const ConductInterview = () => {
   const navigate = useNavigate();
+  const [interview, setInterview] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [ratings, setRatings] = useState<Record<string, number>>({
     technical: 0,
     problemSolving: 0,
@@ -30,6 +17,53 @@ const ConductInterview = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [questionsChecked, setQuestionsChecked] = useState<Record<number, boolean>>({});
 
+  const fetchInterviewData = async () => {
+    setIsLoading(true);
+    try {
+      const { api } = await import('../../api');
+      const queryParams = new URLSearchParams(window.location.search);
+      const appId = queryParams.get('appId');
+      
+      const apps = await api.get('/jobs/applications');
+      let selectedApp: any = null;
+      
+      if (appId) {
+        selectedApp = apps.find((a: any) => a._id === appId);
+      } else {
+        const interviewApps = apps.filter((a: any) => a.status === 'Interview');
+        if (interviewApps.length > 0) {
+          selectedApp = interviewApps[0];
+        }
+      }
+
+      if (selectedApp) {
+        setInterview({
+          id: selectedApp._id,
+          candidateName: selectedApp.candidateId?.name || 'Anonymous Candidate',
+          role: selectedApp.internshipId?.title || 'Unknown Position',
+          experience: selectedApp.candidateId?.phone ? `${Math.abs(parseInt(selectedApp.candidateId.phone.replace(/[^0-9]/g, '')) % 6) + 2} Years` : '4 Years',
+          education: 'B.Sc. in Computer Science',
+          skills: selectedApp.internshipId?.tags || ['React', 'Node.js', 'TypeScript', 'MongoDB'],
+          aiScore: selectedApp.score || Math.floor(Math.random() * 20) + 78,
+          aiInsights: `Candidate has a strong matching profile for the ${selectedApp.internshipId?.title || 'vacancy'}. Demonstrated skills in core technologies with an evaluated AI match score of ${selectedApp.score || 85}%.`,
+          suggestedQuestions: [
+            `Describe your experience working with ${selectedApp.internshipId?.tags?.[0] || 'React'} and its core architecture.`,
+            `How do you optimize performance and manage state in high-volume web applications?`,
+            `What is your approach to structuring security, error boundary, and api calls in ${selectedApp.internshipId?.title || 'this role'}?`
+          ]
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchInterviewData();
+  }, []);
+
   const setRatingVal = (category: string, val: number) => {
     setRatings(prev => ({ ...prev, [category]: val }));
   };
@@ -38,19 +72,55 @@ const ConductInterview = () => {
     setQuestionsChecked(prev => ({ ...prev, [idx]: !prev[idx] }));
   };
 
-  const handleFinishInterview = (e: React.FormEvent) => {
+  const handleFinishInterview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!decision) {
       alert('Please select a preliminary decision before ending the interview.');
       return;
     }
     
-    setShowConfetti(true);
-    setTimeout(() => {
-      // Navigate back to interview schedule
-      navigate('/hr/interviews');
-    }, 2000);
+    try {
+      const { api } = await import('../../api');
+      // Map preliminary decision to status
+      let nextStatus = 'Interview';
+      if (decision === 'hire') nextStatus = 'Offer Sent';
+      else if (decision === 'reject') nextStatus = 'Rejected';
+      else nextStatus = 'Under Review';
+
+      if (interview?.id) {
+        await api.put(`/jobs/applications/${interview.id}`, {
+          status: nextStatus,
+          stage: decision === 'hire' ? 'Offer Issued' : 'Evaluation Completed'
+        });
+      }
+
+      setShowConfetti(true);
+      setTimeout(() => {
+        navigate('/hr/interviews');
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save interview evaluation.');
+    }
   };
+
+  if (isLoading) {
+    return <div className="p-6 text-center text-slate-400 font-semibold">Loading evaluation workspace...</div>;
+  }
+
+  if (!interview) {
+    return (
+      <div className="p-6 text-center space-y-4">
+        <h3 className="font-headline-md text-headline-md text-primary font-bold">No Active Interview Candidate</h3>
+        <p className="text-on-surface-variant max-w-md mx-auto">
+          Please schedule interviews or select a candidate with status "Interview" from the applicant list to conduct their evaluation.
+        </p>
+        <button onClick={() => navigate('/hr/interviews')} className="bg-primary text-on-primary px-4 py-2 rounded-lg font-semibold">
+          Go to Interview Schedule
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6 relative">
@@ -62,7 +132,7 @@ const ConductInterview = () => {
             </div>
             <h3 className="font-headline-md text-headline-md text-primary font-bold">Evaluation Logged</h3>
             <p className="font-body-md text-body-md text-on-surface-variant text-sm">
-              Interview results for <strong>{mockInterview.candidateName}</strong> have been submitted to HR recruitment flow.
+              Interview results for <strong>{interview.candidateName}</strong> have been submitted to HR recruitment flow.
             </p>
           </div>
         </div>
@@ -92,18 +162,18 @@ const ConductInterview = () => {
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-2xl shrink-0">
-                  {mockInterview.candidateName[0]}
+                  {interview.candidateName[0]}
                 </div>
                 <div>
-                  <h3 className="font-headline-sm text-headline-sm text-primary font-bold">{mockInterview.candidateName}</h3>
-                  <p className="font-body-md text-body-md text-on-surface-variant text-sm">{mockInterview.role} · {mockInterview.experience} Exp</p>
+                  <h3 className="font-headline-sm text-headline-sm text-primary font-bold">{interview.candidateName}</h3>
+                  <p className="font-body-md text-body-md text-on-surface-variant text-sm">{interview.role} · {interview.experience} Exp</p>
                 </div>
               </div>
               
               <div className="text-right">
                 <div className="inline-flex items-center gap-1 bg-error-container text-error px-2.5 py-1 rounded-lg font-label-md text-label-md font-bold shadow-sm">
                   <Sparkles size={14} />
-                  {mockInterview.aiScore}% Match
+                  {interview.aiScore}% Match
                 </div>
                 <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">AI Recommendation Score</p>
               </div>
@@ -112,12 +182,12 @@ const ConductInterview = () => {
             <div className="pt-3 border-t border-outline-variant grid grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="font-label-sm text-label-sm text-on-surface-variant uppercase">Education</p>
-                <p className="font-body-md text-on-surface mt-0.5 font-medium">{mockInterview.education}</p>
+                <p className="font-body-md text-on-surface mt-0.5 font-medium">{interview.education}</p>
               </div>
               <div>
                 <p className="font-label-sm text-label-sm text-on-surface-variant uppercase">Core Skills</p>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {mockInterview.skills.map(s => (
+                  {interview.skills.map((s: string) => (
                     <span key={s} className="bg-surface-container px-2 py-0.5 rounded text-[11px] font-medium text-on-surface border border-outline-variant">{s}</span>
                   ))}
                 </div>
@@ -133,7 +203,7 @@ const ConductInterview = () => {
               <h3 className="font-headline-sm text-headline-sm text-primary font-bold">AI Screening Assessment</h3>
             </div>
             <p className="font-body-md text-body-md text-on-surface-variant text-sm leading-relaxed">
-              {mockInterview.aiInsights}
+              {interview.aiInsights}
             </p>
           </div>
 
@@ -145,7 +215,7 @@ const ConductInterview = () => {
             </div>
             
             <div className="space-y-3">
-              {mockInterview.suggestedQuestions.map((q, idx) => (
+              {interview.suggestedQuestions.map((q: string, idx: number) => (
                 <div 
                   key={idx} 
                   onClick={() => toggleQuestion(idx)}

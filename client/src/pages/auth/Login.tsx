@@ -67,81 +67,8 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Quick Demo Login Tabs */}
-          {/* Quick Demo Login Grid */}
-          <div className="mb-6 space-y-2.5">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                Quick Fill Demo Workspace
-              </span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-teal-50 text-teal-650 border border-teal-100 animate-pulse">
-                One-Click Access
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2.5">
-              {[
-                { 
-                  label: 'Admin', 
-                  sub: 'Full Access Console', 
-                  email: 'admin@hrflow.app', 
-                  pass: 'Admin123!',
-                  border: 'hover:border-blue-500/40 hover:shadow-blue-500/5',
-                  iconColor: 'text-blue-700 bg-blue-50 border-blue-100',
-                  badge: 'Admin'
-                },
-                { 
-                  label: 'HR Manager', 
-                  sub: 'Hiring & Jobs', 
-                  email: 'hr@hrflow.app', 
-                  pass: 'HrManager123!',
-                  border: 'hover:border-emerald-500/40 hover:shadow-emerald-500/5',
-                  iconColor: 'text-emerald-700 bg-emerald-50 border-emerald-100',
-                  badge: 'HR'
-                },
-                { 
-                  label: 'Employee', 
-                  sub: 'Tasks & Timesheets', 
-                  email: 'employee@hrflow.app', 
-                  pass: 'Employee123!',
-                  border: 'hover:border-teal-500/40 hover:shadow-teal-500/5',
-                  iconColor: 'text-teal-700 bg-teal-50 border-teal-100',
-                  badge: 'Staff'
-                },
-                { 
-                  label: 'Candidate', 
-                  sub: 'Portal & Quiz', 
-                  email: 'candidate@hrflow.app', 
-                  pass: 'Candidate123!',
-                  border: 'hover:border-slate-450/40 hover:shadow-slate-450/5',
-                  iconColor: 'text-slate-700 bg-slate-100 border-slate-200',
-                  badge: 'Applicant'
-                }
-              ].map(d => (
-                <button
-                  key={d.label}
-                  type="button"
-                  onClick={() => {
-                    setEmail(d.email);
-                    setPassword(d.pass);
-                    setError('');
-                  }}
-                  className={`flex items-center gap-2.5 p-2.5 text-left bg-white border border-slate-200 rounded-2xl transition-all duration-200 active:scale-[0.98] cursor-pointer hover:shadow-sm hover:bg-slate-50/50 ${d.border} group border-0`}
-                >
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs shrink-0 border ${d.iconColor}`}>
-                    {d.label[0]}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-black text-slate-800 leading-tight group-hover:text-primary transition-colors">
-                      {d.label}
-                    </p>
-                    <p className="text-[9px] font-semibold text-slate-400 leading-tight mt-0.5 truncate">
-                      {d.sub}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
+
+
 
           {error && (
             <div className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-100/50 text-rose-600 text-xs font-semibold flex items-center gap-2">
