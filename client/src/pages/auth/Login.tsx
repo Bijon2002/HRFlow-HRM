@@ -11,7 +11,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !password) {
@@ -22,27 +22,28 @@ const Login = () => {
     setIsLoading(true);
     setError('');
 
-    // Simulate authentication API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const { api, setAuthToken } = await import('../../api');
+      const data = await api.post('/auth/login', { email, password });
       
-      // Strict credentials check for requested admin
-      if (email === 'admin@gmail.com') {
-        if (password !== 'admin123') {
-          setError('Invalid credentials. Admin password is "admin123"');
-          return;
-        }
+      setIsLoading(false);
+      setAuthToken(data.token);
+      localStorage.setItem('hrflow_user', JSON.stringify(data));
+      localStorage.setItem('hrflow_current_role', data.role);
+      
+      if (data.role === 'admin') {
         navigate('/admin/dashboard');
-      } else if (email.includes('admin')) {
-        navigate('/admin/dashboard');
-      } else if (email.includes('hr')) {
+      } else if (data.role === 'hr') {
         navigate('/hr/dashboard');
-      } else if (email.includes('employee')) {
+      } else if (data.role === 'employee') {
         navigate('/employee/dashboard');
       } else {
         navigate('/candidate/dashboard');
       }
-    }, 1200);
+    } catch (err: any) {
+      setIsLoading(false);
+      setError(err.message || 'Invalid email or password');
+    }
   };
 
   return (
