@@ -1,11 +1,31 @@
 const express = require('express');
-const { registerUser, loginUser, getUserProfile } = require('../controllers/authController');
+const { 
+  registerUser, 
+  loginUser, 
+  getUserProfile, 
+  updatePassword, 
+  getUsers, 
+  adminCreateUser, 
+  adminUpdateUser, 
+  adminDeleteUser 
+} = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
+const { authorize } = require('../middleware/roleMiddleware');
 
 const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/profile', protect, getUserProfile);
+router.put('/password', protect, updatePassword);
+
+// User management routes
+router.route('/users')
+  .get(protect, authorize('hr', 'admin'), getUsers)
+  .post(protect, authorize('admin'), adminCreateUser);
+
+router.route('/users/:id')
+  .put(protect, authorize('admin'), adminUpdateUser)
+  .delete(protect, authorize('admin'), adminDeleteUser);
 
 module.exports = router;
