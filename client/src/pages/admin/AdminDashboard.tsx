@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Shield, 
@@ -21,10 +21,29 @@ const AdminDashboard = () => {
   const [memUsage, setMemUsage] = useState(68);
   const [isRefreshingCache, setIsRefreshingCache] = useState(false);
   const [isBackingUp, setIsBackingUp] = useState(false);
+  const [usersCount, setUsersCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Toast notifications
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  const fetchStats = async () => {
+    setIsLoading(true);
+    try {
+      const { api } = await import('../../api');
+      const users = await api.get('/auth/users');
+      setUsersCount(users.length);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
@@ -56,7 +75,7 @@ const AdminDashboard = () => {
 
   // Metrics array
   const systemMetrics = [
-    { label: 'Registered Profiles', count: '1,248', link: '/admin/users', icon: Users, color: 'text-blue-500 bg-blue-50 border-blue-100 border' },
+    { label: 'Registered Profiles', count: isLoading ? '...' : String(usersCount), link: '/admin/users', icon: Users, color: 'text-blue-500 bg-blue-50 border-blue-100 border' },
     { label: 'Configured Roles', count: '4 Roles', link: '/admin/roles', icon: Shield, color: 'text-rose-500 bg-rose-50 border-rose-100 border' },
     { label: 'Feature Toggles', count: '4 Flags', link: '/admin/configuration', icon: Sliders, color: 'text-teal-500 bg-teal-50 border-teal-100 border' },
     { label: 'Audit Security Logs', count: '14 Active', link: '/admin/security', icon: ShieldCheck, color: 'text-indigo-500 bg-indigo-50 border-indigo-100 border' },

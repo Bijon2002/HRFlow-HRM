@@ -1,14 +1,5 @@
-import React, { useState } from 'react';
-import { Calendar as CalendarIcon, CheckCircle2, XCircle, Clock, AlertCircle, FileText, Check, X, Search, Filter } from 'lucide-react';
-
-const initialLogs = [
-  { id: '1', name: 'Rafi Ahmed', role: 'Product Manager', date: 'Today', checkIn: '09:05 AM', checkOut: '--:--', status: 'On Time', hours: '4.5 hrs' },
-  { id: '2', name: 'Sarah Hassan', role: 'Software Engineer', date: 'Today', checkIn: '09:45 AM', checkOut: '--:--', status: 'Late', hours: '3.75 hrs' },
-  { id: '3', name: 'Tanvir Khan', role: 'Data Analyst', date: 'Today', checkIn: '08:58 AM', checkOut: '--:--', status: 'On Time', hours: '4.6 hrs' },
-  { id: '4', name: 'Nadia Islam', role: 'UX Designer', date: 'Yesterday', checkIn: '09:12 AM', checkOut: '05:30 PM', status: 'On Time', hours: '8.3 hrs' },
-  { id: '5', name: 'Rafi Ahmed', role: 'Product Manager', date: 'Yesterday', checkIn: '09:02 AM', checkOut: '05:15 PM', status: 'On Time', hours: '8.2 hrs' },
-  { id: '6', name: 'Sarah Hassan', role: 'Software Engineer', date: 'Yesterday', checkIn: '10:15 AM', checkOut: '06:00 PM', status: 'Late', hours: '7.75 hrs' },
-];
+import React, { useState, useEffect } from 'react';
+import { Calendar as CalendarIcon, CheckCircle2, Clock, AlertCircle, FileText, Check, X, Search } from 'lucide-react';
 
 const initialLeaveRequests = [
   { id: '1', name: 'Nadia Islam', role: 'UX Designer', type: 'Annual Leave', duration: 'Jul 14 - Jul 17 (4 days)', reason: 'Family vacation and personal travel', status: 'Pending' },
@@ -16,10 +7,62 @@ const initialLeaveRequests = [
 ];
 
 const AttendanceTracking = () => {
-  const [logs, setLogs] = useState(initialLogs);
+  const [logs, setLogs] = useState<any[]>([]);
   const [requests, setRequests] = useState(initialLeaveRequests);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
+  const [isLoading, setIsLoading] = useState(true);
+  const [staffCount, setStaffCount] = useState(0);
+
+  const fetchAttendanceLogs = async () => {
+    setIsLoading(true);
+    try {
+      const { api } = await import('../../api');
+      
+      // Fetch users count to calculate rates
+      const users = await api.get('/auth/users');
+      const staff = users.filter((u: any) => u.role === 'employee' || u.role === 'hr');
+      setStaffCount(staff.length);
+
+      // Fetch attendance logs
+      const data = await api.get('/attendance');
+      const mapped = data.map((log: any) => {
+        const checkInTime = log.clockIn ? new Date(log.clockIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--';
+        const checkOutTime = log.clockOut ? new Date(log.clockOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--';
+        
+        // Mark as Late if check in is after 09:30 AM
+        const clockInDate = log.clockIn ? new Date(log.clockIn) : null;
+        let status = 'On Time';
+        if (clockInDate) {
+          const hour = clockInDate.getHours();
+          const minute = clockInDate.getMinutes();
+          if (hour > 9 || (hour === 9 && minute > 30)) {
+            status = 'Late';
+          }
+        }
+        
+        return {
+          id: log._id,
+          name: log.employeeId?.name || 'Anonymous Staff',
+          role: log.employeeId?.role === 'hr' ? 'HR Manager' : 'Software Engineer',
+          date: log.date,
+          checkIn: checkInTime,
+          checkOut: checkOutTime,
+          status,
+          hours: log.totalHours ? `${log.totalHours} hrs` : '0 hrs'
+        };
+      });
+      setLogs(mapped);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAttendanceLogs();
+  }, []);
 
   const handleApproveLeave = (id: string) => {
     setRequests(prev => prev.map(req => req.id === id ? { ...req, status: 'Approved' } : req));
@@ -36,6 +79,10 @@ const AttendanceTracking = () => {
     return matchesSearch && matchesFilter;
   });
 
+  const todayStr = new Date().toISOString().split('T')[0];
+  const presentToday = logs.filter(l => l.date === todayStr).length;
+  const lateToday = logs.filter(l => l.date === todayStr && l.status === 'Late').length;
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -49,7 +96,7 @@ const AttendanceTracking = () => {
         <div className="flex gap-2">
           <span className="bg-surface-container border border-outline-variant px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface flex items-center gap-2 shadow-sm">
             <CalendarIcon size={16} className="text-secondary" />
-            July 9, 2026
+            {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </span>
         </div>
       </div>
@@ -57,9 +104,9 @@ const AttendanceTracking = () => {
       {/* Stats row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Present Today', val: '12 / 15', desc: '80% Attendance rate', color: 'text-secondary bg-secondary-fixed' },
-          { label: 'Late Clock-ins', val: '2', desc: 'Requires attention', color: 'text-error bg-error-container' },
-          { label: 'On Leave Today', val: '1', desc: 'Pre-approved leave', color: 'text-on-tertiary-fixed-variant bg-tertiary-fixed' },
+          { label: 'Present Today', val: `${presentToday} / ${staffCount || 1}`, desc: 'Active attendance', color: 'text-secondary bg-secondary-fixed' },
+          { label: 'Late Clock-ins', val: String(lateToday), desc: 'Clock-in after 09:30 AM', color: 'text-error bg-error-container' },
+          { label: 'On Leave Today', val: '0', desc: 'Pre-approved leave', color: 'text-on-tertiary-fixed-variant bg-tertiary-fixed' },
           { label: 'Pending Requests', val: requests.filter(r => r.status === 'Pending').length.toString(), desc: 'Require review', color: 'text-secondary bg-secondary-fixed' }
         ].map((s, idx) => (
           <div key={idx} className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant hover:shadow-md transition-all flex flex-col justify-between">
@@ -104,51 +151,55 @@ const AttendanceTracking = () => {
               </div>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-surface-container-low border-b border-outline-variant">
-                  <tr>
-                    {['Employee', 'Date', 'Clock In', 'Clock Out', 'Status', 'Work Hours'].map(h => (
-                      <th key={h} className="px-4 py-3 font-label-md text-label-md text-on-surface-variant">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-outline-variant">
-                  {filteredLogs.length > 0 ? (
-                    filteredLogs.map((log) => (
-                      <tr key={log.id} className="hover:bg-surface-container-low/40 transition-colors">
-                        <td className="px-4 py-3.5">
-                          <div>
-                            <p className="font-label-md text-label-md text-on-surface font-semibold">{log.name}</p>
-                            <p className="font-body-md text-body-md text-on-surface-variant text-xs">{log.role}</p>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3.5 font-body-md text-body-md text-on-surface-variant text-sm">{log.date}</td>
-                        <td className="px-4 py-3.5 font-body-md text-body-md text-on-surface text-sm flex items-center gap-1.5">
-                          <Clock size={12} className="text-on-surface-variant" /> {log.checkIn}
-                        </td>
-                        <td className="px-4 py-3.5 font-body-md text-body-md text-on-surface-variant text-sm">{log.checkOut}</td>
-                        <td className="px-4 py-3.5">
-                          <span className={`px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold text-[10px] flex items-center gap-1 w-fit ${
-                            log.status === 'On Time' ? 'bg-secondary-fixed text-secondary' : 'bg-error-container text-error'
-                          }`}>
-                            {log.status === 'On Time' ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
-                            {log.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3.5 font-label-md text-label-md text-on-surface font-semibold text-sm">{log.hours}</td>
-                      </tr>
-                    ))
-                  ) : (
+            {isLoading ? (
+              <div className="text-center py-12 text-slate-400 font-semibold">Loading attendance logs...</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-surface-container-low border-b border-outline-variant">
                     <tr>
-                      <td colSpan={6} className="px-4 py-8 text-center font-body-md text-body-md text-on-surface-variant">
-                        No attendance logs found matching search criteria.
-                      </td>
+                      {['Employee', 'Date', 'Clock In', 'Clock Out', 'Status', 'Work Hours'].map(h => (
+                        <th key={h} className="px-4 py-3 font-label-md text-label-md text-on-surface-variant">{h}</th>
+                      ))}
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant">
+                    {filteredLogs.length > 0 ? (
+                      filteredLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-surface-container-low/40 transition-colors">
+                          <td className="px-4 py-3.5">
+                            <div>
+                              <p className="font-label-md text-label-md text-on-surface font-semibold">{log.name}</p>
+                              <p className="font-body-md text-body-md text-on-surface-variant text-xs">{log.role}</p>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3.5 font-body-md text-body-md text-on-surface-variant text-sm">{log.date}</td>
+                          <td className="px-4 py-3.5 font-body-md text-body-md text-on-surface text-sm flex items-center gap-1.5">
+                            <Clock size={12} className="text-on-surface-variant" /> {log.checkIn}
+                          </td>
+                          <td className="px-4 py-3.5 font-body-md text-body-md text-on-surface-variant text-sm">{log.checkOut}</td>
+                          <td className="px-4 py-3.5">
+                            <span className={`px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold text-[10px] flex items-center gap-1 w-fit ${
+                              log.status === 'On Time' ? 'bg-secondary-fixed text-secondary' : 'bg-error-container text-error'
+                            }`}>
+                              {log.status === 'On Time' ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
+                              {log.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3.5 font-label-md text-label-md text-on-surface font-semibold text-sm">{log.hours}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6} className="px-4 py-8 text-center font-body-md text-body-md text-on-surface-variant">
+                          No attendance logs found matching search criteria.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
 
