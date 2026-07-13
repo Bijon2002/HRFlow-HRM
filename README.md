@@ -17,7 +17,7 @@ graph TD
 
 - **Frontend (`/client`)**: React single-page application built with Vite, TypeScript, Tailwind CSS, and Redux Toolkit.
 - **Backend (`/server`)**: Express.js server providing RESTful APIs, JWT role-based authentication, and orchestration.
-- **AI Service (`/ai-service`)**: Python microservice (FastAPI/Flask) containing the NLP-based Resume Parser and candidate-to-job matching algorithms.
+- **AI Service (`/ai-service`)**: Python FastAPI microservice utilizing OpenRouter (GPT-4o / Llama 3.3) for CV parsing and candidate matching.
 - **Database**: MongoDB (Mongoose ORM) for persistent data storage.
 
 ---
@@ -107,13 +107,15 @@ HRFlow-HRM/
    python -m venv venv
    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
    ```
-3. Install dependencies:
+3. Setup your `.env` configuration:
+   - Create `.env` and add `OPENROUTER_API_KEY=your_openrouter_key`
+4. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-4. Start the service:
+5. Start the service (runs on port 8000):
    ```bash
-   python app.py
+   python main.py
    ```
 
 ---
