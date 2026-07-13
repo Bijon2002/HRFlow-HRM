@@ -48,7 +48,7 @@ const Register = () => {
     }
   }, [password]);
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!fullName || !email || !password || !confirmPassword) {
@@ -69,11 +69,20 @@ const Register = () => {
     setIsLoading(true);
     setError('');
 
-    // Simulate registration API call
-    setTimeout(() => {
+    try {
+      const { api, setAuthToken } = await import('../../api');
+      const data = await api.post('/auth/register', { name: fullName, email, password, role: 'candidate' });
+      
       setIsLoading(false);
+      setAuthToken(data.token);
+      localStorage.setItem('hrflow_user', JSON.stringify(data));
+      localStorage.setItem('hrflow_current_role', data.role);
+      
       navigate('/candidate/dashboard');
-    }, 1500);
+    } catch (err: any) {
+      setIsLoading(false);
+      setError(err.message || 'Registration failed');
+    }
   };
 
   return (

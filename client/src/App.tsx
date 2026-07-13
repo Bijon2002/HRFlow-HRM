@@ -60,6 +60,8 @@ import ProfileSettings from './pages/shared/ProfileSettings';
 import NotFound from './pages/error/NotFound';
 import Unauthorized from './pages/error/Unauthorized';
 
+import ProtectedRoute from './components/common/ProtectedRoute';
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -74,9 +76,13 @@ const App = () => {
           <Route path="auth/register" element={<Register />} />
           <Route path="auth/forgot-password" element={<ForgotPassword />} />
         </Route>
-
+ 
         {/* Candidate Routes */}
-        <Route path="/candidate" element={<DashboardLayout />}>
+        <Route path="/candidate" element={
+          <ProtectedRoute allowedRoles={['candidate']}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<CandidateDashboard />} />
           <Route path="internships" element={<InternshipsList />} />
@@ -85,9 +91,13 @@ const App = () => {
           <Route path="interviews" element={<CandidateInterviews />} />
           <Route path="quiz" element={<Quiz />} />
         </Route>
-
+ 
         {/* HR Routes */}
-        <Route path="/hr" element={<DashboardLayout />}>
+        <Route path="/hr" element={
+          <ProtectedRoute allowedRoles={['hr', 'admin']}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<HRDashboard />} />
           <Route path="vacancies" element={<ManageVacancies />} />
@@ -99,18 +109,26 @@ const App = () => {
           <Route path="attendance" element={<AttendanceTracking />} />
           <Route path="projects" element={<ProjectAssignment />} />
         </Route>
-
+ 
         {/* Employee Routes */}
-        <Route path="/employee" element={<DashboardLayout />}>
+        <Route path="/employee" element={
+          <ProtectedRoute allowedRoles={['employee', 'hr', 'admin']}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<EmployeeDashboard />} />
           <Route path="tasks" element={<MyTasks />} />
           <Route path="attendance" element={<MyAttendance />} />
           <Route path="performance" element={<MyPerformance />} />
         </Route>
-
+ 
         {/* Admin Routes */}
-        <Route path="/admin" element={<DashboardLayout />}>
+        <Route path="/admin" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="users" element={<UserManagement />} />
@@ -119,15 +137,19 @@ const App = () => {
           <Route path="configuration" element={<SystemConfiguration />} />
           <Route path="security" element={<SecurityPermissions />} />
         </Route>
-
+ 
         {/* Shared Routes within Dashboard Layout */}
-        <Route path="/shared" element={<DashboardLayout />}>
+        <Route path="/shared" element={
+          <ProtectedRoute allowedRoles={['candidate', 'hr', 'employee', 'admin']}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }>
           <Route path="notifications" element={<Notifications />} />
           <Route path="messages" element={<Messages />} />
           <Route path="calendar" element={<Calendar />} />
           <Route path="profile" element={<ProfileSettings />} />
         </Route>
-
+ 
         {/* Error Routes */}
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<NotFound />} />
